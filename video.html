@@ -110,14 +110,16 @@
             overflow: hidden;
             box-shadow: var(--box-shadow);
             position: relative;
-            max-width: 800px;
+            max-width: 400px; /* Format 9:16 */
             margin: 0 auto;
+            height: 711px; /* Hauteur pour format 9:16 */
         }
         
         #videoPlayer {
             width: 100%;
-            aspect-ratio: 16/9;
+            height: 100%;
             display: block;
+            object-fit: cover;
         }
         
         .video-info {
@@ -173,17 +175,22 @@
             transition: all 0.3s;
         }
         
-        .like-btn {
+        .like-btn, .dislike-btn {
             background-color: #f8f9fa;
             color: #333;
         }
         
-        .like-btn:hover {
+        .like-btn:hover, .dislike-btn:hover {
             background-color: #e9ecef;
         }
         
         .like-btn.liked {
             background-color: #e74c3c;
+            color: white;
+        }
+        
+        .dislike-btn.disliked {
+            background-color: #6c757d;
             color: white;
         }
         
@@ -245,6 +252,10 @@
             font-weight: 500;
         }
         
+        .subscribe-btn.subscribed {
+            background-color: #6c757d;
+        }
+        
         /* Related Videos */
         .related-videos {
             margin: 40px 0;
@@ -280,14 +291,24 @@
         .video-thumbnail {
             position: relative;
             width: 100%;
-            height: 160px;
+            height: 0;
+            padding-bottom: 66.67%; /* Ratio 3:2 */
             overflow: hidden;
         }
         
         .video-thumbnail img {
+            position: absolute;
             width: 100%;
             height: 100%;
             object-fit: cover;
+            filter: blur(2px); /* Léger flou esthétique */
+            transform: scale(1.05); /* Dézoom léger */
+            transition: filter 0.3s, transform 0.3s;
+        }
+        
+        .video-card:hover .video-thumbnail img {
+            filter: blur(0);
+            transform: scale(1);
         }
         
         .play-icon {
@@ -299,6 +320,7 @@
             font-size: 30px;
             opacity: 0.8;
             transition: opacity 0.3s;
+            z-index: 2;
         }
         
         .video-card:hover .play-icon {
@@ -330,6 +352,93 @@
             margin-top: 8px;
             font-size: 12px;
             color: #666;
+        }
+        
+        /* Comment Section */
+        .comments-section {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .comment-form {
+            margin-bottom: 30px;
+        }
+        
+        .comment-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            resize: vertical;
+            min-height: 80px;
+            margin-bottom: 10px;
+            font-family: inherit;
+        }
+        
+        .comment-submit-btn {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .comment-submit-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .comments-list {
+            margin-top: 20px;
+        }
+        
+        .comment {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .comment:last-child {
+            border-bottom: none;
+        }
+        
+        .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .comment-date {
+            font-size: 12px;
+            color: #999;
+            margin-left: 10px;
+        }
+        
+        .comment-content {
+            color: #333;
+            line-height: 1.5;
         }
         
         /* Modal de partage */
@@ -412,6 +521,95 @@
             background-color: #6c757d;
         }
         
+        /* Auth Modal */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            overflow: auto;
+        }
+        
+        .auth-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 400px;
+            box-shadow: var(--box-shadow);
+            position: relative;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .auth-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-weight: 500;
+            color: #666;
+            flex: 1;
+        }
+        
+        .auth-tab.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+        
+        .auth-submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+        
+        .auth-error {
+            color: var(--accent-color);
+            margin-top: 10px;
+            font-size: 14px;
+            display: none;
+        }
+        
         /* Footer */
         footer {
             background-color: var(--dark-color);
@@ -477,6 +675,9 @@
             
             .video-player-container {
                 border-radius: 0;
+                max-width: 100%;
+                height: auto;
+                aspect-ratio: 9/16;
             }
             
             .author-section {
@@ -526,6 +727,14 @@
         .video-likes i {
             color: #e74c3c;
         }
+        
+        .video-dislikes {
+            color: #6c757d;
+        }
+        
+        .video-dislikes i {
+            color: #6c757d;
+        }
     </style>
 </head>
 <body>
@@ -569,11 +778,18 @@
                         <i class="fas fa-heart"></i>
                         <span id="videoLikes">0</span> j'aime
                     </div>
+                    <div class="stat-item video-dislikes">
+                        <i class="fas fa-thumbs-down"></i>
+                        <span id="videoDislikes">0</span> je n'aime pas
+                    </div>
                 </div>
                 
                 <div class="video-actions">
                     <button id="likeButton" class="action-btn like-btn">
                         <i class="far fa-heart"></i> J'aime
+                    </button>
+                    <button id="dislikeButton" class="action-btn dislike-btn">
+                        <i class="far fa-thumbs-down"></i> Je n'aime pas
                     </button>
                     <button class="action-btn share-btn" onclick="openShareModal()">
                         <i class="fas fa-share-alt"></i> Partager
@@ -588,8 +804,23 @@
                         <h3 id="authorName" class="author-name">Nom de l'auteur</h3>
                         <p id="authorStats" class="author-stats">0 abonnés • 0 vidéos</p>
                     </div>
-                    <button class="subscribe-btn">S'abonner</button>
+                    <button id="subscribeButton" class="subscribe-btn">S'abonner</button>
                 </div>
+            </div>
+        </section>
+        
+        <!-- Comment Section -->
+        <section class="comments-section">
+            <h2 class="section-title">Commentaires</h2>
+            
+            <div class="comment-form">
+                <textarea id="commentInput" class="comment-input" placeholder="Ajouter un commentaire..." disabled></textarea>
+                <button id="commentSubmit" class="comment-submit-btn" disabled>Commenter</button>
+                <p id="commentLoginPrompt" style="color: #666; margin-top: 10px;">Veuillez vous connecter pour commenter</p>
+            </div>
+            
+            <div class="comments-list" id="commentsContainer">
+                <!-- Les commentaires seront chargés ici -->
             </div>
         </section>
         
@@ -621,6 +852,53 @@
                     <i class="fas fa-link"></i> Copier le lien
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal d'authentification -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-content">
+            <span class="close-modal" onclick="closeModal('authModal')">&times;</span>
+            <h2>Connexion / Inscription</h2>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchAuthTab('login')">Connexion</button>
+                <button class="auth-tab" onclick="switchAuthTab('register')">Inscription</button>
+            </div>
+            
+            <form id="loginForm" class="auth-form active">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Mot de passe</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="auth-submit-btn">Se connecter</button>
+                <div id="loginError" class="auth-error"></div>
+            </form>
+            
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="registerName">Nom d'utilisateur</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Mot de passe</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Confirmer le mot de passe</label>
+                    <input type="password" id="registerConfirmPassword" required>
+                </div>
+                <button type="submit" class="auth-submit-btn">S'inscrire</button>
+                <div id="registerError" class="auth-error"></div>
+            </form>
         </div>
     </div>
 
@@ -675,6 +953,8 @@
         let currentVideoId = null;
         let currentVideoData = null;
         let isLiked = false;
+        let isDisliked = false;
+        let isSubscribed = false;
 
         // ===== FONCTIONS PRINCIPALES =====
         function initVideoPage() {
@@ -688,7 +968,8 @@
 
             loadVideoData(currentVideoId);
             loadRelatedVideos();
-            checkIfLiked();
+            loadComments();
+            setupAuthStateListener();
         }
 
         function loadVideoData(videoId) {
@@ -727,6 +1008,7 @@
             document.getElementById('videoDescription').textContent = videoData.description;
             document.getElementById('videoViews').textContent = videoData.views || 0;
             document.getElementById('videoLikes').textContent = videoData.likes || 0;
+            document.getElementById('videoDislikes').textContent = videoData.dislikes || 0;
 
             if (videoData.timestamp) {
                 const publishDate = new Date(videoData.timestamp.seconds * 1000);
@@ -738,15 +1020,22 @@
         }
 
         function loadAuthorStats(userId) {
+            // Charger le nombre de vidéos de l'auteur
             db.collection('videos').where('userId', '==', userId).get()
                 .then((querySnapshot) => {
                     const videoCount = querySnapshot.size;
                     
-                    // Récupérer le nombre d'abonnés (à implémenter si vous avez une collection subscribers)
-                    const subscriberCount = 0;
-                    
-                    document.getElementById('authorStats').textContent =
-                        `${subscriberCount} abonnés • ${videoCount} vidéos`;
+                    // Charger le nombre d'abonnés
+                    db.collection('subscribers').where('channelId', '==', userId).get()
+                        .then((subscriberSnapshot) => {
+                            const subscriberCount = subscriberSnapshot.size;
+                            
+                            document.getElementById('authorStats').textContent =
+                                `${subscriberCount} abonnés • ${videoCount} vidéos`;
+                        })
+                        .catch((error) => {
+                            console.error("Erreur lors du chargement des abonnés:", error);
+                        });
                 })
                 .catch((error) => {
                     console.error("Erreur lors du chargement des statistiques de l'auteur:", error);
@@ -874,15 +1163,50 @@
             if (!user) return;
             
             // Vérifier si l'utilisateur a déjà liké cette vidéo
-            // (À implémenter si vous avez une collection de likes)
-            isLiked = false;
-            updateLikeButton();
+            db.collection('likes').where('userId', '==', user.uid).where('videoId', '==', currentVideoId).get()
+                .then((querySnapshot) => {
+                    isLiked = !querySnapshot.empty;
+                    updateLikeButton();
+                })
+                .catch((error) => {
+                    console.error("Erreur lors de la vérification du like:", error);
+                });
+        }
+
+        function checkIfDisliked() {
+            const user = auth.currentUser;
+            if (!user) return;
+            
+            // Vérifier si l'utilisateur a déjà disliké cette vidéo
+            db.collection('dislikes').where('userId', '==', user.uid).where('videoId', '==', currentVideoId).get()
+                .then((querySnapshot) => {
+                    isDisliked = !querySnapshot.empty;
+                    updateDislikeButton();
+                })
+                .catch((error) => {
+                    console.error("Erreur lors de la vérification du dislike:", error);
+                });
+        }
+
+        function checkIfSubscribed() {
+            const user = auth.currentUser;
+            if (!user || !currentVideoData) return;
+            
+            // Vérifier si l'utilisateur est déjà abonné à cette chaîne
+            db.collection('subscribers').where('userId', '==', user.uid).where('channelId', '==', currentVideoData.userId).get()
+                .then((querySnapshot) => {
+                    isSubscribed = !querySnapshot.empty;
+                    updateSubscribeButton();
+                })
+                .catch((error) => {
+                    console.error("Erreur lors de la vérification de l'abonnement:", error);
+                });
         }
 
         function toggleLike() {
             const user = auth.currentUser;
             if (!user) {
-                alert('Veuillez vous connecter pour aimer cette vidéo');
+                openAuthModal();
                 return;
             }
             
@@ -892,25 +1216,156 @@
             
             if (isLiked) {
                 // Retirer le like
-                videoRef.update({ 
-                    likes: firebase.firestore.FieldValue.increment(-1) 
-                }).then(() => {
-                    isLiked = false;
-                    likesElement.textContent = currentLikes - 1;
-                    updateLikeButton();
-                }).catch(error => {
-                    console.error("Erreur lors du retrait du like:", error);
-                });
+                db.collection('likes').where('userId', '==', user.uid).where('videoId', '==', currentVideoId).get()
+                    .then((querySnapshot) => {
+                        const batch = db.batch();
+                        querySnapshot.forEach((doc) => {
+                            batch.delete(doc.ref);
+                        });
+                        return batch.commit();
+                    })
+                    .then(() => {
+                        return videoRef.update({ 
+                            likes: firebase.firestore.FieldValue.increment(-1) 
+                        });
+                    })
+                    .then(() => {
+                        isLiked = false;
+                        likesElement.textContent = currentLikes - 1;
+                        updateLikeButton();
+                    })
+                    .catch(error => {
+                        console.error("Erreur lors du retrait du like:", error);
+                    });
             } else {
                 // Ajouter un like
-                videoRef.update({ 
-                    likes: firebase.firestore.FieldValue.increment(1) 
-                }).then(() => {
+                // Si l'utilisateur avait disliké, retirer le dislike d'abord
+                if (isDisliked) {
+                    toggleDislike();
+                }
+                
+                db.collection('likes').add({
+                    userId: user.uid,
+                    videoId: currentVideoId,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                })
+                .then(() => {
+                    return videoRef.update({ 
+                        likes: firebase.firestore.FieldValue.increment(1) 
+                    });
+                })
+                .then(() => {
                     isLiked = true;
                     likesElement.textContent = currentLikes + 1;
                     updateLikeButton();
-                }).catch(error => {
+                })
+                .catch(error => {
                     console.error("Erreur lors de l'ajout du like:", error);
+                });
+            }
+        }
+
+        function toggleDislike() {
+            const user = auth.currentUser;
+            if (!user) {
+                openAuthModal();
+                return;
+            }
+            
+            const videoRef = db.collection('videos').doc(currentVideoId);
+            const dislikesElement = document.getElementById('videoDislikes');
+            const currentDislikes = parseInt(dislikesElement.textContent);
+            
+            if (isDisliked) {
+                // Retirer le dislike
+                db.collection('dislikes').where('userId', '==', user.uid).where('videoId', '==', currentVideoId).get()
+                    .then((querySnapshot) => {
+                        const batch = db.batch();
+                        querySnapshot.forEach((doc) => {
+                            batch.delete(doc.ref);
+                        });
+                        return batch.commit();
+                    })
+                    .then(() => {
+                        return videoRef.update({ 
+                            dislikes: firebase.firestore.FieldValue.increment(-1) 
+                        });
+                    })
+                    .then(() => {
+                        isDisliked = false;
+                        dislikesElement.textContent = currentDislikes - 1;
+                        updateDislikeButton();
+                    })
+                    .catch(error => {
+                        console.error("Erreur lors du retrait du dislike:", error);
+                    });
+            } else {
+                // Ajouter un dislike
+                // Si l'utilisateur avait liké, retirer le like d'abord
+                if (isLiked) {
+                    toggleLike();
+                }
+                
+                db.collection('dislikes').add({
+                    userId: user.uid,
+                    videoId: currentVideoId,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                })
+                .then(() => {
+                    return videoRef.update({ 
+                        dislikes: firebase.firestore.FieldValue.increment(1) 
+                    });
+                })
+                .then(() => {
+                    isDisliked = true;
+                    dislikesElement.textContent = currentDislikes + 1;
+                    updateDislikeButton();
+                })
+                .catch(error => {
+                    console.error("Erreur lors de l'ajout du dislike:", error);
+                });
+            }
+        }
+
+        function toggleSubscribe() {
+            const user = auth.currentUser;
+            if (!user || !currentVideoData) {
+                openAuthModal();
+                return;
+            }
+            
+            if (isSubscribed) {
+                // Se désabonner
+                db.collection('subscribers').where('userId', '==', user.uid).where('channelId', '==', currentVideoData.userId).get()
+                    .then((querySnapshot) => {
+                        const batch = db.batch();
+                        querySnapshot.forEach((doc) => {
+                            batch.delete(doc.ref);
+                        });
+                        return batch.commit();
+                    })
+                    .then(() => {
+                        isSubscribed = false;
+                        updateSubscribeButton();
+                        updateAuthorStats();
+                    })
+                    .catch(error => {
+                        console.error("Erreur lors du désabonnement:", error);
+                    });
+            } else {
+                // S'abonner
+                db.collection('subscribers').add({
+                    userId: user.uid,
+                    channelId: currentVideoData.userId,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                })
+                .then(() => {
+                    isSubscribed = true;
+                    updateSubscribeButton();
+                    updateAuthorStats();
+                })
+                .catch(error => {
+                    console.error("Erreur lors de l'abonnement:", error);
                 });
             }
         }
@@ -924,6 +1379,114 @@
                 : '<i class="far fa-heart"></i> J\'aime';
                 
             likeButton.classList.toggle('liked', isLiked);
+        }
+
+        function updateDislikeButton() {
+            const dislikeButton = document.getElementById('dislikeButton');
+            if (!dislikeButton) return;
+            
+            dislikeButton.innerHTML = isDisliked
+                ? '<i class="fas fa-thumbs-down"></i> Je n\'aime pas'
+                : '<i class="far fa-thumbs-down"></i> Je n\'aime pas';
+                
+            dislikeButton.classList.toggle('disliked', isDisliked);
+        }
+
+        function updateSubscribeButton() {
+            const subscribeButton = document.getElementById('subscribeButton');
+            if (!subscribeButton) return;
+            
+            subscribeButton.textContent = isSubscribed ? 'Abonné' : 'S\'abonner';
+            subscribeButton.classList.toggle('subscribed', isSubscribed);
+        }
+
+        function updateAuthorStats() {
+            if (!currentVideoData) return;
+            
+            // Recharger les statistiques de l'auteur
+            loadAuthorStats(currentVideoData.userId);
+        }
+
+        // ===== FONCTIONS DE COMMENTAIRES =====
+        function loadComments() {
+            const commentsContainer = document.getElementById('commentsContainer');
+            if (!commentsContainer) return;
+            commentsContainer.innerHTML = '';
+            
+            db.collection('comments')
+                .where('videoId', '==', currentVideoId)
+                .orderBy('timestamp', 'desc')
+                .get()
+                .then((querySnapshot) => {
+                    if (querySnapshot.empty) {
+                        commentsContainer.innerHTML = '<p style="text-align: center; color: #666;">Aucun commentaire pour le moment.</p>';
+                        return;
+                    }
+                    
+                    querySnapshot.forEach((doc) => {
+                        const commentData = doc.data();
+                        createCommentElement(commentData, commentsContainer);
+                    });
+                })
+                .catch((error) => {
+                    console.error("Erreur lors du chargement des commentaires:", error);
+                    commentsContainer.innerHTML = '<p style="text-align: center; color: #666;">Erreur lors du chargement des commentaires.</p>';
+                });
+        }
+
+        function createCommentElement(commentData, container) {
+            const comment = document.createElement('div');
+            comment.className = 'comment';
+            
+            const commentDate = commentData.timestamp
+                ? new Date(commentData.timestamp.seconds * 1000).toLocaleDateString('fr-FR')
+                : 'Date inconnue';
+                
+            comment.innerHTML = `
+                <div class="comment-header">
+                    <div class="comment-avatar">
+                        ${commentData.userName ? commentData.userName.charAt(0).toUpperCase() : 'U'}
+                    </div>
+                    <div class="comment-author">${commentData.userName || 'Utilisateur'}</div>
+                    <div class="comment-date">${commentDate}</div>
+                </div>
+                <div class="comment-content">${commentData.content}</div>
+            `;
+            
+            container.appendChild(comment);
+        }
+
+        function submitComment() {
+            const user = auth.currentUser;
+            if (!user) {
+                openAuthModal();
+                return;
+            }
+            
+            const commentInput = document.getElementById('commentInput');
+            const content = commentInput.value.trim();
+            
+            if (!content) {
+                alert('Veuillez écrire un commentaire');
+                return;
+            }
+            
+            // Ajouter le commentaire à la base de données
+            db.collection('comments').add({
+                videoId: currentVideoId,
+                userId: user.uid,
+                userName: user.displayName || 'Utilisateur',
+                content: content,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                commentInput.value = '';
+                loadComments(); // Recharger les commentaires
+            })
+            .catch((error) => {
+                console.error("Erreur lors de l'ajout du commentaire:", error);
+                alert('Une erreur s\'est produite lors de l\'ajout du commentaire');
+            });
         }
 
         // ===== FONCTIONS DE PARTAGE =====
@@ -1002,6 +1565,104 @@
             document.title = videoData.title + ' - Mougouli';
         }
 
+        // ===== FONCTIONS D'AUTHENTIFICATION =====
+        function setupAuthStateListener() {
+            auth.onAuthStateChanged((user) => {
+                const commentInput = document.getElementById('commentInput');
+                const commentSubmit = document.getElementById('commentSubmit');
+                const commentLoginPrompt = document.getElementById('commentLoginPrompt');
+                
+                if (user) {
+                    // Utilisateur connecté
+                    if (commentInput) commentInput.disabled = false;
+                    if (commentSubmit) commentSubmit.disabled = false;
+                    if (commentLoginPrompt) commentLoginPrompt.style.display = 'none';
+                    
+                    // Vérifier les états like/dislike/abonnement
+                    checkIfLiked();
+                    checkIfDisliked();
+                    checkIfSubscribed();
+                } else {
+                    // Utilisateur non connecté
+                    if (commentInput) commentInput.disabled = true;
+                    if (commentSubmit) commentSubmit.disabled = true;
+                    if (commentLoginPrompt) commentLoginPrompt.style.display = 'block';
+                    
+                    isLiked = false;
+                    isDisliked = false;
+                    isSubscribed = false;
+                    updateLikeButton();
+                    updateDislikeButton();
+                    updateSubscribeButton();
+                }
+            });
+        }
+
+        function openAuthModal() {
+            document.getElementById('authModal').style.display = 'block';
+        }
+
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelectorAll('.auth-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            document.querySelector(`.auth-tab[onclick="switchAuthTab('${tab}')"]`).classList.add('active');
+            document.getElementById(tab + 'Form').classList.add('active');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorElement = document.getElementById('loginError');
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    closeModal('authModal');
+                })
+                .catch((error) => {
+                    errorElement.textContent = error.message;
+                    errorElement.style.display = 'block';
+                });
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            const errorElement = document.getElementById('registerError');
+            
+            // Validation
+            if (password !== confirmPassword) {
+                errorElement.textContent = 'Les mots de passe ne correspondent pas';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Mettre à jour le profil avec le nom d'utilisateur
+                    return userCredential.user.updateProfile({
+                        displayName: name
+                    });
+                })
+                .then(() => {
+                    closeModal('authModal');
+                })
+                .catch((error) => {
+                    errorElement.textContent = error.message;
+                    errorElement.style.display = 'block';
+                });
+        }
+
         // ===== FONCTIONS UTILITAIRES =====
         function goBack() {
             window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
@@ -1026,22 +1687,58 @@
                 }, 100);
             }
 
-            // Ajouter l'écouteur d'événement pour le bouton like
+            // Ajouter les écouteurs d'événements pour les boutons
             const likeButton = document.getElementById('likeButton');
             if (likeButton) {
                 likeButton.addEventListener('click', toggleLike);
             }
+            
+            const dislikeButton = document.getElementById('dislikeButton');
+            if (dislikeButton) {
+                dislikeButton.addEventListener('click', toggleDislike);
+            }
+            
+            const subscribeButton = document.getElementById('subscribeButton');
+            if (subscribeButton) {
+                subscribeButton.addEventListener('click', toggleSubscribe);
+            }
+            
+            const commentSubmit = document.getElementById('commentSubmit');
+            if (commentSubmit) {
+                commentSubmit.addEventListener('click', submitComment);
+            }
+            
+            const commentInput = document.getElementById('commentInput');
+            if (commentInput) {
+                commentInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        submitComment();
+                    }
+                });
+            }
+            
+            // Ajouter les écouteurs pour les formulaires d'authentification
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', handleLogin);
+            }
+            
+            const registerForm = document.getElementById('registerForm');
+            if (registerForm) {
+                registerForm.addEventListener('submit', handleRegister);
+            }
 
-            // Fermer la modale en cliquant à l'extérieur
+            // Fermer les modales en cliquant à l'extérieur
             window.addEventListener('click', function (event) {
-                const modal = document.getElementById('shareModal');
-                if (event.target === modal) {
-                    closeModal('shareModal');
-                }
+                const modals = document.querySelectorAll('.modal, .auth-modal');
+                modals.forEach(modal => {
+                    if (event.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
             });
         });
     </script>
-</body>
-</html>
 </body>
 </html>
