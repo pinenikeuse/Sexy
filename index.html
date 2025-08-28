@@ -4,7 +4,7 @@
     <meta name="google-adsense-account" content="ca-pub-5904049904040571">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mougouli.com - Plateforme de Vidéos</title>
+    <title>djoukeli.com.com - Plateforme de Vidéos</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -39,6 +39,7 @@
             background-color: #f4f4f9;
             overflow-x: hidden;
             position: relative;
+            padding-bottom: 70px; /* Espace pour la barre de navigation inférieure */
         }
         
         /* Désactiver le zoom */
@@ -60,7 +61,7 @@
         header {
             background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 15px 0;
+            padding: 10px 0; /* Réduction de l'espace vide */
             box-shadow: var(--box-shadow);
             position: sticky;
             top: 0;
@@ -80,15 +81,15 @@
         }
         
         #logo {
-            width: 120px;
+            width: 100px; /* Logo légèrement plus petit */
             height: auto;
-            margin-right: 15px;
+            margin-right: 10px; /* Espacement réduit */
         }
         
         .site-title {
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
-            font-size: 24px;
+            font-size: 22px; /* Taille réduite pour plus de compacité */
         }
         
         .search-bar {
@@ -108,7 +109,7 @@
             padding: 10px 15px;
             background-color: var(--dark-color);
             color: white;
-            border: null;
+            border: none;
             border-radius: 0 var(--border-radius) var(--border-radius) 0;
             cursor: pointer;
         }
@@ -117,11 +118,11 @@
         .user-actions {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px; /* Espacement réduit */
         }
         
         .publish-btn, .profile-btn, .login-btn {
-            padding: 8px 15px;
+            padding: 8px 12px; /* Padding réduit */
             background-color: var(--accent-color);
             color: white;
             border: none;
@@ -131,6 +132,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            font-size: 14px; /* Taille de police réduite */
         }
         
         .profile-btn {
@@ -140,25 +142,55 @@
         .login-btn {
             background-color: var(--dark-color);
         }
+
+        /* Profile Icon in Header */
+        .profile-icon-header {
+            width: 36px; /* Taille réduite */
+            height: 36px; /* Taille réduite */
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 8px; /* Espacement réduit */
+            font-size: 16px; /* Taille de police réduite */
+        }
+        
+        /* Message Icon in Header */
+        .message-icon-header {
+            width: 36px; /* Taille réduite */
+            height: 36px; /* Taille réduite */
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            margin-left: 8px; /* Espacement réduit */
+        }
         
         /* Language Selector */
         .language-selector {
-            margin: 15px 0;
+            margin: 10px 0; /* Marge réduite */
             text-align: center;
         }
         
         .language-selector select {
-            padding: 10px 15px;
+            padding: 8px 12px; /* Padding réduit */
             border-radius: var(--border-radius);
             border: 1px solid #ddd;
-            font-size: 16px;
+            font-size: 14px; /* Taille de police réduite */
             background-color: white;
         }
         
         /* Main Content */
         .main-content {
             display: flex;
-            margin: 20px 0;
+            margin: 15px 0; /* Marge réduite */
             gap: 20px;
         }
         
@@ -173,8 +205,8 @@
         /* Video Grid */
         .section-title {
             font-family: 'Poppins', sans-serif;
-            margin: 20px 0;
-            padding-bottom: 10px;
+            margin: 15px 0; /* Marge réduite */
+            padding-bottom: 8px; /* Padding réduit */
             border-bottom: 2px solid var(--primary-color);
             color: var(--dark-color);
         }
@@ -202,11 +234,13 @@
         .video-thumbnail {
             position: relative;
             width: 100%;
-            height: 180px;
+            height: 0;
+            padding-bottom: 66.67%; /* Ratio 3:2 pour les miniatures */
             overflow: hidden;
         }
         
         .video-thumbnail img {
+            position: absolute;
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -649,6 +683,47 @@
             cursor: pointer;
         }
         
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        
+        .nav-item.active, .nav-item:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-item.active .nav-icon {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+            color: #666;
+            transition: all 0.3s;
+        }
+        
         /* Responsive Design */
         @media (max-width: 992px) {
             .main-content {
@@ -746,6 +821,11 @@
         .video-author i {
             color: #aaaaaa;
         }
+
+        /* Popular Videos Section */
+        .popular-videos-section {
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
@@ -788,69 +868,34 @@
         </div>
     </div>
 
-    <!-- Modal de publication -->
-    <div id="publishModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('publishModal')">&times;</span>
-            <h2>Publier une vidéo</h2>
-            <div id="publishError" style="color: red; margin-bottom: 15px; display: none;"></div>
-            <form id="publishForm">
-                <div class="form-group">
-                    <label for="videoTitle">Titre de la vidéo</label>
-                    <input type="text" id="videoTitle" required>
-                </div>
-                <div class="form-group">
-                    <label for="videoDescription">Description</label>
-                    <textarea id="videoDescription" required></textarea>
-                </div>
-                
-                <!-- Upload de fichier -->
-                <div class="form-group">
-                    <label for="videoFile">Sélectionner une vidéo</label>
-                    <div class="upload-container" id="uploadContainer">
-                        <div class="upload-btn">
-                            <i class="fas fa-cloud-upload-alt"></i> Choisir une vidéo
-                            <input type="file" id="videoFile" accept="video/*" required>
-                        </div>
-                        <p>ou glissez-déposez la vidéo ici</p>
-                        <div class="progress-bar" id="progressBar">
-                            <div class="progress" id="progress"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <button type="submit" class="submit-btn" id="publishButton">
-                    <span id="publishButtonText">Publier</span>
-                    <div id="publishSpinner" style="display: none;">
-                        <i class="fas fa-spinner fa-spin"></i> Téléchargement...
-                    </div>
-                </button>
-            </form>
-        </div>
-    </div>
-
     <!-- Header Section -->
     <header>
         <div class="container">
             <div class="header-content">
                 <div class="logo-container">
-                    <img id="logo" src="https://raw.githubusercontent.com/pinenikeuse/mougouli/refs/heads/main/1747616058238.jpg" alt="Mougouli Logo">
-                    <h1 class="site-title">Mougouli</h1>
+                    <img id="logo" src="https://raw.githubusercontent.com/pinenikeuse/mougouli/refs/heads/main/1747616058238.jpg" alt="djoukeli.com Logo">
+                    <h1 class="site-title">djoukeli.com</h1>
                 </div>
                 <div class="search-bar">
-                    <input type="text" placeholder="Rechercher des vidéos...">
-                    <button>Rechercher</button>
+                    <input type="text" id="searchInput" placeholder="Rechercher des vidéos...">
+                    <button onclick="performSearch()">Rechercher</button>
                 </div>
                 <div class="user-actions">
-                    <button id="publishBtn" class="publish-btn">
+                    <button id="publishBtn" class="publish-btn" onclick="navigateTo('publier.html')">
                         <i class="fas fa-upload"></i> Publier
                     </button>
-                    <button id="profileBtn" class="profile-btn" style="display: none;">
+                    <button id="profileBtn" class="profile-btn" style="display: none;" onclick="navigateTo('myprofile.html')">
                         <i class="fas fa-user"></i> Profil
                     </button>
                     <button id="loginBtn" class="login-btn">
                         <i class="fas fa-sign-in-alt"></i> Connexion
                     </button>
+                    <div class="message-icon-header" onclick="navigateTo('messages.html')">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div id="profileIconHeader" class="profile-icon-header" style="display: none;" onclick="navigateTo('myprofile.html')">
+                        U
+                    </div>
                 </div>
             </div>
         </div>
@@ -859,7 +904,7 @@
     <!-- Language Selector -->
     <div class="container">
         <div class="language-selector">
-            <select id="language-select">
+            <select id="language-select" onchange="changeLanguage()">
                 <option value="fr">Français</option>
                 <option value="en">English</option>
                 <option value="es">Español</option>
@@ -887,22 +932,17 @@
                             <p id="profileEmail">email@exemple.com</p>
                         </div>
                     </div>
-                    
-                    <h3 class="section-title">Mes publications</h3>
-                    <div class="videos-grid" id="userVideosContainer">
-                        <!-- Les vidéos de l'utilisateur seront chargées ici -->
-                    </div>
                 </div>
 
                 <!-- Money Section -->
                 <div class="money-section">
                     <div class="section-header">
-                        <h3>Gagnez de l'argent avec Mougouli</h3>
+                        <h3>Gagnez de l'argent avec djoukeli.com</h3>
                         <button class="toggle-btn" id="showDetailsBtn">RETRAIT D'ARGENT</button>
                     </div>
                     <div class="details">
-                        <p><strong>Publiez des vidéos sur Mougouli et générez des revenus !</strong></p>
-                        <p>Si vous souhaitez créer un compte pour publier vos vidéos et monétiser votre contenu, contactez-nous à <a href="mailto:baizemi0039@gmail.com">baizemi0039@gmail.com</a>.</p>
+                        <p><strong>Publiez des vidéos sur djoukeli.com et générez des revenus !</strong></p>
+                        <p>Si vous souhaitez créer un compte pour publier vos vidéos et monétiser votre contenu, contactez-nous à <a href="mailto:assistance@djoukeli.com">assistance@djoukeli.com</a>.</p>
                         <p>Nous examinerons votre demande et vous fournirons tous les détails pour commencer à publier et gagner de l'argent.</p>
                         
                         <div class="payment-methods">
@@ -930,8 +970,16 @@
                     </div>
                 </div>
 
+                <!-- Popular Videos Section -->
+                <div class="popular-videos-section">
+                    <h2 class="section-title">Vidéos populaires</h2>
+                    <div class="videos-grid" id="popularVideosContainer">
+                        <!-- Les vidéos populaires seront chargées ici -->
+                    </div>
+                </div>
+
                 <!-- Video Section -->
-                <h2 class="section-title">Vidéos populaires</h2>
+                <h2 class="section-title">Dernières vidéos</h2>
                 <div class="videos-grid" id="videosContainer">
                     <!-- Les vidéos seront chargées dynamiquement ici -->
                 </div>
@@ -984,7 +1032,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>À propos de Mougouli</h4>
+                    <h4>À propos de djoukeli.com</h4>
                     <p>Plateforme de partage de vidéos privées et premium.</p>
                 </div>
                 <div class="footer-section">
@@ -996,15 +1044,35 @@
                 </div>
                 <div class="footer-section">
                     <h4>Contact</h4>
-                    <a href="mailto:baizemi0039@gmail.com">baizemi0039@gmail.com</a>
+                    <a href="mailto:assistance@djoukeli.com">assistance@djoukeli.com</a>
                     <p>Pour toute question ou partenariat</p>
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2023 Mougouli. Tous droits réservés.</p>
+                <p>&copy; 2023 djoukeli.com. Tous droits réservés.</p>
             </div>
         </div>
     </footer>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item active">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <span>Accueil</span>
+        </a>
+        <a href="latest.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-play-circle"></i></div>
+            <span>Vidéos</span>
+        </a>
+        <a href="photos.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-image"></i></div>
+            <span>Photos</span>
+        </a>
+        <a href="upload.html" class="nav-item">
+            <div class="nav-icon"><i class="fas fa-plus-circle"></i></div>
+            <span>Ajouter</span>
+        </a>
+    </div>
 
     <script>
         // Configuration Firebase
@@ -1044,6 +1112,7 @@
                 const profileUsername = document.getElementById('profileUsername');
                 const profileEmail = document.getElementById('profileEmail');
                 const profileSection = document.getElementById('profileSection');
+                const profileIconHeader = document.getElementById('profileIconHeader');
                 
                 if (user) {
                     console.log("Utilisateur connecté:", user.email);
@@ -1062,6 +1131,14 @@
                     if (profileEmail) profileEmail.textContent = user.email || 'Email non disponible';
                     if (profileSection) profileSection.style.display = 'block';
                     
+                    // Mettre à jour l'icône de profil dans l'en-tête
+                    if (profileIconHeader) {
+                        profileIconHeader.style.display = 'flex';
+                        const firstLetter = user.displayName ? user.displayName.charAt(0).toUpperCase() : 
+                                            user.email ? user.email.charAt(0).toUpperCase() : 'U';
+                        profileIconHeader.textContent = firstLetter;
+                    }
+                    
                     loadUserVideos(user.uid);
                 } else {
                     console.log("Aucun utilisateur connecté");
@@ -1071,6 +1148,7 @@
                         loginBtn.onclick = () => openAuthModal();
                     }
                     if (profileSection) profileSection.style.display = 'none';
+                    if (profileIconHeader) profileIconHeader.style.display = 'none';
                 }
             });
         }
@@ -1148,18 +1226,36 @@
         // ===== FONCTIONS D'AFFICHAGE DES VIDÉOS =====
         function loadVideos() {
             const videosContainer = document.getElementById('videosContainer');
-            if (!videosContainer) {
-                console.error("Element 'videosContainer' non trouvé");
+            const popularVideosContainer = document.getElementById('popularVideosContainer');
+            
+            if (!videosContainer || !popularVideosContainer) {
+                console.error("Conteneurs de vidéos non trouvés");
                 return;
             }
             
             videosContainer.innerHTML = '';
+            popularVideosContainer.innerHTML = '';
             
-            // Charger les vidéos avec pagination
+            // Charger les vidéos populaires (par nombre de vues)
             db.collection('videos')
-                .orderBy('timestamp', 'desc')
-                .limit(VIDEOS_PER_PAGE)
+                .orderBy('views', 'desc')
+                .limit(6)
                 .get()
+            .then((querySnapshot) => {
+                if (!querySnapshot.empty) {
+                    querySnapshot.forEach((doc) => {
+                        const videoData = doc.data();
+                        videoData.id = doc.id;
+                        createVideoCard(videoData, popularVideosContainer);
+                    });
+                }
+                
+                // Charger les dernières vidéos
+                return db.collection('videos')
+                    .orderBy('timestamp', 'desc')
+                    .limit(VIDEOS_PER_PAGE)
+                    .get();
+            })
             .then((querySnapshot) => {
                 if (querySnapshot.empty) {
                     loadDefaultVideos(videosContainer);
@@ -1196,8 +1292,8 @@
                 new Date(videoData.timestamp.seconds * 1000).toLocaleDateString('fr-FR') : 
                 'Date inconnue';
             
-            // Générer une miniature à partir de la vidéo (première frame)
-            const thumbnailUrl = videoData.thumbnailUrl || getThumbnailFromVideo(videoData.videoUrl);
+            // Utiliser la miniature stockée ou une image par défaut
+            const thumbnailUrl = videoData.thumbnailUrl || 'https://via.placeholder.com/300x200/3498db/ffffff?text=Miniature';
             
             videoCard.innerHTML = `
                 <div class="video-thumbnail" onclick="navigateToVideo('${videoData.id}')">
@@ -1228,13 +1324,7 @@
 
         function navigateToVideo(videoId) {
             // Rediriger vers la page vidéo avec l'ID de la vidéo
-            window.location.href = `video.html?id=${videoId}`;
-        }
-
-        function getThumbnailFromVideo(videoUrl) {
-            // Cette fonction génère une URL de miniature à partir de l'URL de la vidéo
-            // En production, vous devriez générer et stocker des miniatures réelles
-            return 'https://via.placeholder.com/300x180/3498db/ffffff?text=Miniature';
+            navigateTo(`video.html?id=${videoId}`);
         }
 
         function loadDefaultVideos(container) {
@@ -1298,87 +1388,6 @@
             });
         }
 
-        // ===== FONCTIONS DE PUBLICATION =====
-        function openPublishModal() {
-            const user = auth.currentUser;
-            if (user) {
-                // Ouvrir le modal de publication si l'utilisateur est connecté
-                document.getElementById('publishModal').style.display = 'block';
-                document.getElementById('publishError').style.display = 'none';
-                document.getElementById('publishForm').reset();
-                selectedVideoFile = null;
-            } else {
-                // Ouvrir le modal d'authentification si l'utilisateur n'est pas connecté
-                openAuthModal();
-            }
-        }
-
-        function handlePublishFormSubmit() {
-            const user = auth.currentUser;
-            if (!user) {
-                showPublishError('Vous devez être connecté pour publier une vidéo');
-                return;
-            }
-            
-            const title = document.getElementById('videoTitle').value;
-            const description = document.getElementById('videoDescription').value;
-            
-            if (!selectedVideoFile) {
-                showPublishError('Veuillez sélectionner une vidéo');
-                return;
-            }
-            
-            // Afficher l'indicateur de progression
-            showPublishProgress(true);
-            
-            // Upload de la vidéo
-            const fileExtension = selectedVideoFile.name.split('.').pop();
-            const fileName = `videos/${user.uid}/${Date.now()}.${fileExtension}`;
-            const storageRef = storage.ref(fileName);
-            const uploadTask = storageRef.put(selectedVideoFile);
-            
-            // Surveiller la progression
-            uploadTask.on('state_changed',
-                (snapshot) => {
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    updateProgressBar(progress);
-                },
-                (error) => {
-                    console.error('Erreur lors de l\'upload:', error);
-                    showPublishError('Erreur lors du téléchargement: ' + error.message);
-                    showPublishProgress(false);
-                },
-                () => {
-                    // Upload réussi
-                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                        // Ajouter les métadonnées de la vidéo à Firestore
-                        db.collection('videos').add({
-                            title: title,
-                            description: description,
-                            videoUrl: downloadURL,
-                            userId: user.uid,
-                            username: user.displayName || 'Utilisateur',
-                            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                            views: 0
-                        }).then((docRef) => {
-                            console.log("Vidéo publiée avec ID: ", docRef.id);
-                            closeModal('publishModal');
-                            showAlert("Succès", "Votre vidéo a été publiée avec succès!");
-                            
-                            // Recharger les vidéos
-                            loadVideos();
-                            loadUserVideos(user.uid);
-                        }).catch((error) => {
-                            console.error("Erreur lors de l'ajout de la vidéo: ", error);
-                            showPublishError("Erreur lors de la publication: " + error.message);
-                        }).finally(() => {
-                            showPublishProgress(false);
-                        });
-                    });
-                }
-            );
-        }
-
         // ===== FONCTIONS UTILITAIRES =====
         function confirmAge() {
             try {
@@ -1431,75 +1440,75 @@
             }
         }
 
-        function showPublishError(message) {
-            const errorElement = document.getElementById('publishError');
-            if (errorElement) {
-                errorElement.textContent = message;
-                errorElement.style.display = 'block';
-            }
-        }
-
-        function showPublishProgress(show) {
-            const buttonText = document.getElementById('publishButtonText');
-            const spinner = document.getElementById('publishSpinner');
-            const button = document.getElementById('publishButton');
+        // Fonction de navigation fluide
+        function navigateTo(page) {
+            // Animation de transition
+            document.body.style.opacity = "0.8";
+            document.body.style.transition = "opacity 0.3s ease";
             
-            if (buttonText) buttonText.style.display = show ? 'none' : 'block';
-            if (spinner) spinner.style.display = show ? 'block' : 'none';
-            if (button) button.disabled = show;
+            setTimeout(() => {
+                window.location.href = page;
+            }, 300);
+        }
+
+        // Fonction de recherche
+        function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
             
-            const progressBar = document.getElementById('progressBar');
-            if (progressBar) {
-                progressBar.style.display = show ? 'block' : 'none';
+            if (searchTerm === '') {
+                loadVideos();
+                return;
             }
-        }
-
-        function updateProgressBar(progress) {
-            const progressElement = document.getElementById('progress');
-            if (progressElement) {
-                progressElement.style.width = progress + '%';
-            }
-        }
-
-        // Gestion de l'upload de vidéo
-        document.getElementById('videoFile').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                selectedVideoFile = file;
+            
+            const videosContainer = document.getElementById('videosContainer');
+            const popularVideosContainer = document.getElementById('popularVideosContainer');
+            
+            if (!videosContainer || !popularVideosContainer) return;
+            
+            videosContainer.innerHTML = '<p>Recherche en cours...</p>';
+            popularVideosContainer.innerHTML = '';
+            
+            // Recherche dans Firestore
+            db.collection('videos')
+                .orderBy('timestamp', 'desc')
+                .get()
+            .then((querySnapshot) => {
+                videosContainer.innerHTML = '';
                 
-                // Masquer les erreurs précédentes
-                document.getElementById('publishError').style.display = 'none';
-            }
-        });
-
-        // Gestion du drag and drop
-        const uploadContainer = document.getElementById('uploadContainer');
-        if (uploadContainer) {
-            uploadContainer.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                uploadContainer.classList.add('dragover');
-            });
-            
-            uploadContainer.addEventListener('dragleave', function() {
-                uploadContainer.classList.remove('dragover');
-            });
-            
-            uploadContainer.addEventListener('drop', function(e) {
-                e.preventDefault();
-                uploadContainer.classList.remove('dragover');
+                let resultsFound = false;
                 
-                const file = e.dataTransfer.files[0];
-                if (file && file.type.startsWith('video/')) {
-                    selectedVideoFile = file;
-                    document.getElementById('videoFile').files = e.dataTransfer.files;
+                querySnapshot.forEach((doc) => {
+                    const videoData = doc.data();
+                    videoData.id = doc.id;
                     
-                    // Masquer les erreurs précédentes
-                    document.getElementById('publishError').style.display = 'none';
-                } else {
-                    document.getElementById('publishError').textContent = 'Veuillez sélectionner un fichier vidéo valide';
-                    document.getElementById('publishError').style.display = 'block';
+                    // Vérifier si le terme de recherche correspond au titre ou à la description
+                    if (videoData.title.toLowerCase().includes(searchTerm) || 
+                        (videoData.description && videoData.description.toLowerCase().includes(searchTerm))) {
+                        createVideoCard(videoData, videosContainer);
+                        resultsFound = true;
+                    }
+                });
+                
+                if (!resultsFound) {
+                    videosContainer.innerHTML = '<p>Aucune vidéo trouvée pour votre recherche.</p>';
                 }
+            })
+            .catch((error) => {
+                console.error("Erreur lors de la recherche: ", error);
+                videosContainer.innerHTML = '<p>Erreur lors de la recherche.</p>';
             });
+        }
+
+        // Fonction de changement de langue
+        function changeLanguage() {
+            const languageSelect = document.getElementById('language-select');
+            const selectedLanguage = languageSelect.value;
+            
+            // Stocker la préférence de langue
+            localStorage.setItem('preferredLanguage', selectedLanguage);
+            
+            // Afficher un message de confirmation
+            alert(`La langue a été changée. En production, cette fonctionnalité traduirait tout le contenu du site.`);
         }
 
         // ===== ÉVÉNEMENTS AU CHARGEMENT =====
@@ -1515,19 +1524,6 @@
                     e.preventDefault();
                     handleAuthFormSubmit();
                 });
-            }
-            
-            const publishForm = document.getElementById('publishForm');
-            if (publishForm) {
-                publishForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    handlePublishFormSubmit();
-                });
-            }
-            
-            const publishBtn = document.getElementById('publishBtn');
-            if (publishBtn) {
-                publishBtn.addEventListener('click', openPublishModal);
             }
             
             const authSwitch = document.getElementById('authSwitch');
@@ -1569,11 +1565,37 @@
                     }
                 });
             }
+
+            // Gestion de la navigation active
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                const href = item.getAttribute('href');
+                if (href === currentPage) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            // Recherche lors de la pression sur Entrée
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            // Charger la langue préférée
+            const preferredLanguage = localStorage.getItem('preferredLanguage');
+            if (preferredLanguage) {
+                document.getElementById('language-select').value = preferredLanguage;
+            }
         });
 
         // Fermer les modals en cliquant à l'extérieur
         window.onclick = function(event) {
-            const modals = ['authModal', 'publishModal'];
+            const modals = ['authModal'];
             
             modals.forEach(modalId => {
                 const modal = document.getElementById(modalId);
