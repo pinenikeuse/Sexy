@@ -670,7 +670,7 @@
 
         const auth = firebase.auth();
         const db = firebase.firestore();
-        
+    
         // Variables globales
         let currentVideoId = null;
         let currentVideoData = null;
@@ -678,127 +678,110 @@
 
         // ===== FONCTIONS PRINCIPALES =====
         function initVideoPage() {
-            // Récupérer l'ID de la vidéo depuis l'URL
             const urlParams = new URLSearchParams(window.location.search);
             currentVideoId = urlParams.get('id');
-            
+
             if (!currentVideoId) {
-                // Rediriger vers la page d'accueil si aucun ID de vidéo n'est fourni
                 window.location.href = 'index.html';
                 return;
             }
-            
-            // Charger les données de la vidéo
+
             loadVideoData(currentVideoId);
-            
-            // Charger les vidéos similaires
             loadRelatedVideos();
-            
-            // Vérifier si l'utilisateur a déjà liké cette vidéo
             checkIfLiked();
         }
 
         function loadVideoData(videoId) {
             db.collection('videos').doc(videoId).get()
-            .then((doc) => {
-                if (doc.exists) {
-                    currentVideoData = doc.data();
-                    currentVideoData.id = doc.id;
-                    
-                    // Mettre à jour l'interface avec les données de la vidéo
-                    updateVideoUI(currentVideoData);
-                    
-                    // Mettre à jour les métadonnées pour le partage social
-                    updateMetaTags(currentVideoData);
-                    
-                    // Incrémenter le compteur de vues
-                    incrementVideoViews(videoId);
-                } else {
-                    console.error("Vidéo non trouvée");
-                    // Rediriger vers la page d'accueil si la vidéo n'existe pas
+                .then((doc) => {
+                    if (doc.exists) {
+                        currentVideoData = doc.data();
+                        currentVideoData.id = doc.id;
+                        updateVideoUI(currentVideoData);
+                        updateMetaTags(currentVideoData);
+                        incrementVideoViews(videoId);
+                    } else {
+                        console.error("Vidéo non trouvée");
+                        window.location.href = 'index.html';
+                    }
+                })
+                .catch((error) => {
+                    console.error("Erreur lors du chargement de la vidéo:", error);
                     window.location.href = 'index.html';
-                }
-            })
-            .catch((error) => {
-                console.error("Erreur lors du chargement de la vidéo:", error);
-                window.location.href = 'index.html';
-            });
+                });
         }
 
         function updateVideoUI(videoData) {
-            // Mettre à jour le lecteur vidéo
             const videoPlayer = document.getElementById('videoPlayer');
-            if (videoPlayer) {
-                videoPlayer.innerHTML = `<source src="${videoData.videoUrl}" type="video/mp4">`;
-                videoPlayer.load();
-            }
+            if (!videoPlayer) return;
             
-            // Mettre à jour les informations de la vidéo
+            // Réinitialiser le lecteur vidéo
+            videoPlayer.innerHTML = '';
+            const source = document.createElement('source');
+            source.src = videoData.videoUrl;
+            source.type = 'video/mp4';
+            videoPlayer.appendChild(source);
+            videoPlayer.load();
+
             document.getElementById('videoTitle').textContent = videoData.title;
             document.getElementById('videoDescription').textContent = videoData.description;
             document.getElementById('videoViews').textContent = videoData.views || 0;
             document.getElementById('videoLikes').textContent = videoData.likes || 0;
-            
-            // Formater et afficher la date
+
             if (videoData.timestamp) {
                 const publishDate = new Date(videoData.timestamp.seconds * 1000);
                 document.getElementById('videoDate').textContent = publishDate.toLocaleDateString('fr-FR');
             }
-            
-            // Mettre à jour les informations de l'auteur
+
             document.getElementById('authorName').textContent = videoData.username;
-            
-            // Charger les statistiques de l'auteur
             loadAuthorStats(videoData.userId);
         }
 
         function loadAuthorStats(userId) {
-            // Compter le nombre de vidéos de l'auteur
             db.collection('videos').where('userId', '==', userId).get()
-            .then((querySnapshot) => {
-                const videoCount = querySnapshot.size;
-                
-                // Pour les abonnés, vous devrez implémenter un système d'abonnement dans votre base de données
-                const subscriberCount = 0; // À remplacer par le vrai compteur d'abonnés
-                
-                document.getElementById('authorStats').textContent = 
-                    `${subscriberCount} abonnés • ${videoCount} vidéos`;
-            })
-            .catch((error) => {
-                console.error("Erreur lors du chargement des statistiques de l'auteur:", error);
-            });
+                .then((querySnapshot) => {
+                    const videoCount = querySnapshot.size;
+                    
+                    // Récupérer le nombre d'abonnés (à implémenter si vous avez une collection subscribers)
+                    const subscriberCount = 0;
+                    
+                    document.getElementById('authorStats').textContent =
+                        `${subscriberCount} abonnés • ${videoCount} vidéos`;
+                })
+                .catch((error) => {
+                    console.error("Erreur lors du chargement des statistiques de l'auteur:", error);
+                });
         }
 
         function loadRelatedVideos() {
             const relatedContainer = document.getElementById('relatedVideosContainer');
             if (!relatedContainer) return;
-            
             relatedContainer.innerHTML = '';
-            
-            // Charger d'autres vidéos (pour l'exemple, on charge les dernières vidéos)
+
             db.collection('videos')
                 .orderBy('timestamp', 'desc')
                 .limit(6)
                 .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    // Ne pas afficher la vidéo actuelle dans les suggestions
-                    if (doc.id !== currentVideoId) {
-                        const videoData = doc.data();
-                        videoData.id = doc.id;
-                        createRelatedVideoCard(videoData, relatedContainer);
+                .then((querySnapshot) => {
+                    let hasRelatedVideos = false;
+                    
+                    querySnapshot.forEach((doc) => {
+                        if (doc.id !== currentVideoId) {
+                            hasRelatedVideos = true;
+                            const videoData = doc.data();
+                            videoData.id = doc.id;
+                            createRelatedVideoCard(videoData, relatedContainer);
+                        }
+                    });
+                    
+                    if (!hasRelatedVideos) {
+                        loadDefaultRelatedVideos(relatedContainer);
                     }
-                });
-                
-                // Si pas assez de vidéos, charger des vidéos par défaut
-                if (relatedContainer.children.length === 0) {
+                })
+                .catch((error) => {
+                    console.error("Erreur lors du chargement des vidéos similaires:", error);
                     loadDefaultRelatedVideos(relatedContainer);
-                }
-            })
-            .catch((error) => {
-                console.error("Erreur lors du chargement des vidéos similaires:", error);
-                loadDefaultRelatedVideos(relatedContainer);
-            });
+                });
         }
 
         function createRelatedVideoCard(videoData, container) {
@@ -808,12 +791,10 @@
                 window.location.href = `video.html?id=${videoData.id}`;
             };
             
-            // Formater la date de publication
-            const publishDate = videoData.timestamp ? 
-                new Date(videoData.timestamp.seconds * 1000).toLocaleDateString('fr-FR') : 
-                'Date inconnue';
-            
-            // Générer une miniature
+            const publishDate = videoData.timestamp
+                ? new Date(videoData.timestamp.seconds * 1000).toLocaleDateString('fr-FR')
+                : 'Date inconnue';
+                
             const thumbnailUrl = videoData.thumbnailUrl || getThumbnailFromVideo(videoData.videoUrl);
             
             videoCard.innerHTML = `
@@ -832,7 +813,6 @@
                     </div>
                 </div>
             `;
-            
             container.appendChild(videoCard);
         }
 
@@ -870,19 +850,18 @@
         }
 
         function getThumbnailFromVideo(videoUrl) {
-            // Cette fonction génère une URL de miniature à partir de l'URL de la vidéo
-            // En production, vous devriez générer et stocker des miniatures réelles
-            return 'https://via.placeholder.com/300x180/3498db/ffffff?text=Miniature';
+            return "https://via.placeholder.com/300x180/3498db/ffffff?text=Miniature";
         }
 
         // ===== FONCTIONS D'INTERACTION =====
         function incrementVideoViews(videoId) {
             const viewedVideos = JSON.parse(sessionStorage.getItem('viewedVideos') || '[]');
-            
             if (!viewedVideos.includes(videoId)) {
                 const videoRef = db.collection('videos').doc(videoId);
                 videoRef.update({
                     views: firebase.firestore.FieldValue.increment(1)
+                }).catch(error => {
+                    console.error("Erreur lors de l'incrémentation des vues:", error);
                 });
                 
                 viewedVideos.push(videoId);
@@ -895,58 +874,56 @@
             if (!user) return;
             
             // Vérifier si l'utilisateur a déjà liké cette vidéo
-            // Vous devrez implémenter cette fonctionnalité dans votre base de données
-            isLiked = false; // Temporaire, à remplacer par une vérification réelle
-            
+            // (À implémenter si vous avez une collection de likes)
+            isLiked = false;
             updateLikeButton();
         }
 
         function toggleLike() {
             const user = auth.currentUser;
             if (!user) {
-                // Rediriger vers la connexion si l'utilisateur n'est pas connecté
                 alert('Veuillez vous connecter pour aimer cette vidéo');
                 return;
             }
             
-            const likeButton = document.getElementById('likeButton');
             const videoRef = db.collection('videos').doc(currentVideoId);
+            const likesElement = document.getElementById('videoLikes');
+            const currentLikes = parseInt(likesElement.textContent);
             
             if (isLiked) {
                 // Retirer le like
-                videoRef.update({
-                    likes: firebase.firestore.FieldValue.increment(-1)
+                videoRef.update({ 
+                    likes: firebase.firestore.FieldValue.increment(-1) 
+                }).then(() => {
+                    isLiked = false;
+                    likesElement.textContent = currentLikes - 1;
+                    updateLikeButton();
+                }).catch(error => {
+                    console.error("Erreur lors du retrait du like:", error);
                 });
-                isLiked = false;
             } else {
                 // Ajouter un like
-                videoRef.update({
-                    likes: firebase.firestore.FieldValue.increment(1)
+                videoRef.update({ 
+                    likes: firebase.firestore.FieldValue.increment(1) 
+                }).then(() => {
+                    isLiked = true;
+                    likesElement.textContent = currentLikes + 1;
+                    updateLikeButton();
+                }).catch(error => {
+                    console.error("Erreur lors de l'ajout du like:", error);
                 });
-                isLiked = true;
             }
-            
-            // Mettre à jour le compteur affiché
-            const likesElement = document.getElementById('videoLikes');
-            const currentLikes = parseInt(likesElement.textContent);
-            likesElement.textContent = isLiked ? currentLikes + 1 : currentLikes - 1;
-            
-            updateLikeButton();
-            
-            // Ici, vous devriez également enregistrer le like de l'utilisateur dans la base de données
         }
 
         function updateLikeButton() {
             const likeButton = document.getElementById('likeButton');
             if (!likeButton) return;
             
-            if (isLiked) {
-                likeButton.innerHTML = '<i class="fas fa-heart"></i> J\'aime';
-                likeButton.classList.add('liked');
-            } else {
-                likeButton.innerHTML = '<i class="far fa-heart"></i> J\'aime';
-                likeButton.classList.remove('liked');
-            }
+            likeButton.innerHTML = isLiked
+                ? '<i class="fas fa-heart"></i> J\'aime'
+                : '<i class="far fa-heart"></i> J\'aime';
+                
+            likeButton.classList.toggle('liked', isLiked);
         }
 
         // ===== FONCTIONS DE PARTAGE =====
@@ -957,7 +934,6 @@
         function shareVideo(platform) {
             const shareUrl = window.location.origin + window.location.pathname + '?id=' + currentVideoId;
             const title = "Regardez cette vidéo sur Mougouli: " + currentVideoData.title;
-            
             let shareWindowUrl = '';
             
             switch (platform) {
@@ -970,50 +946,65 @@
                 case 'whatsapp':
                     shareWindowUrl = `https://wa.me/?text=${encodeURIComponent(title + ' ' + shareUrl)}`;
                     break;
+                default:
+                    console.error("Plateforme de partage non reconnue");
+                    return;
             }
             
             if (shareWindowUrl) {
-                window.open(shareWindowUrl, '_blank');
+                window.open(shareWindowUrl, '_blank', 'width=600,height=400');
             }
-            
             closeModal('shareModal');
         }
 
         function copyShareLink() {
             const shareUrl = window.location.origin + window.location.pathname + '?id=' + currentVideoId;
             
-            navigator.clipboard.writeText(shareUrl).then(() => {
-                alert('Lien copié dans le presse-papiers!');
-            }).catch(err => {
-                // Fallback pour les navigateurs plus anciens
-                const textArea = document.createElement("textarea");
-                textArea.value = shareUrl;
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
+            navigator.clipboard.writeText(shareUrl)
+                .then(() => {
                     alert('Lien copié dans le presse-papiers!');
-                } catch (err) {
-                    alert('Impossible de copier le lien: ' + err);
-                }
-                document.body.removeChild(textArea);
-            });
-            
-            closeModal('shareModal');
+                    closeModal('shareModal');
+                })
+                .catch(() => {
+                    // Fallback pour les navigateurs qui ne supportent pas clipboard API
+                    const textArea = document.createElement('textarea');
+                    textArea.value = shareUrl;
+                    textArea.style.position = 'fixed';
+                    textArea.style.opacity = 0;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    
+                    try {
+                        const successful = document.execCommand('copy');
+                        if (successful) {
+                            alert('Lien copié dans le presse-papiers!');
+                        } else {
+                            alert('Impossible de copier le lien');
+                        }
+                    } catch (err) {
+                        alert('Impossible de copier le lien: ' + err);
+                    }
+                    
+                    document.body.removeChild(textArea);
+                    closeModal('shareModal');
+                });
         }
 
         function updateMetaTags(videoData) {
-            // Mettre à jour les métadonnées pour le partage social
-            document.querySelector('meta[property="og:title"]').setAttribute('content', videoData.title + ' - Mougouli');
-            document.querySelector('meta[property="og:description"]').setAttribute('content', videoData.description.substring(0, 300));
-            document.querySelector('meta[property="og:image"]').setAttribute('content', videoData.thumbnailUrl || 'https://raw.githubusercontent.com/pinenikeuse/mougouli/main/1747616058238.jpg');
-            document.querySelector('meta[property="og:url"]').setAttribute('content', window.location.href);
-            document.querySelector('meta[property="og:video"]').setAttribute('content', videoData.videoUrl);
+            // Mettre à jour les meta tags pour le référencement et le partage
+            document.querySelector('meta[property="og:title"]')?.setAttribute('content', videoData.title + ' - Mougouli');
+            document.querySelector('meta[property="og:description"]')?.setAttribute('content', videoData.description.substring(0, 300));
+            document.querySelector('meta[property="og:image"]')?.setAttribute('content', videoData.thumbnailUrl || 'https://raw.githubusercontent.com/pinenikeuse/mougouli/main/1747616058238.jpg');
+            document.querySelector('meta[property="og:url"]')?.setAttribute('content', window.location.href);
+            document.querySelector('meta[property="og:video"]')?.setAttribute('content', videoData.videoUrl);
+            
+            // Mettre à jour le titre de la page
+            document.title = videoData.title + ' - Mougouli';
         }
 
         // ===== FONCTIONS UTILITAIRES =====
         function goBack() {
-            window.location.href = 'index.html';
+            window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
         }
 
         function closeModal(modalId) {
@@ -1021,23 +1012,36 @@
         }
 
         // ===== INITIALISATION =====
-        window.addEventListener('load', function() {
-            initVideoPage();
-            
+        window.addEventListener('DOMContentLoaded', function () {
+            // Vérifier que Firebase est initialisé avant d'initialiser la page
+            if (typeof db !== 'undefined' && typeof auth !== 'undefined') {
+                initVideoPage();
+            } else {
+                // Attendre que Firebase soit initialisé
+                const checkFirebase = setInterval(() => {
+                    if (typeof db !== 'undefined' && typeof auth !== 'undefined') {
+                        clearInterval(checkFirebase);
+                        initVideoPage();
+                    }
+                }, 100);
+            }
+
             // Ajouter l'écouteur d'événement pour le bouton like
             const likeButton = document.getElementById('likeButton');
             if (likeButton) {
                 likeButton.addEventListener('click', toggleLike);
             }
-            
-            // Fermer le modal en cliquant à l'extérieur
-            window.onclick = function(event) {
+
+            // Fermer la modale en cliquant à l'extérieur
+            window.addEventListener('click', function (event) {
                 const modal = document.getElementById('shareModal');
                 if (event.target === modal) {
                     closeModal('shareModal');
                 }
-            };
+            });
         });
     </script>
+</body>
+</html>
 </body>
 </html>
