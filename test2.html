@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Djoukeli.com - Plateforme de Vidéos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0f0f0f;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        header {
+            background-color: #0f0f0f;
+            padding: 15px 0;
+            border-bottom: 1px solid #272727;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #ff0000;
+            text-decoration: none;
+        }
+        
+        .search-bar {
+            display: flex;
+            flex: 0 1 600px;
+            margin: 0 20px;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 10px 15px;
+            background: #121212;
+            border: 1px solid #303030;
+            color: white;
+            border-radius: 2px 0 0 2px;
+            font-size: 16px;
+        }
+        
+        .search-bar button {
+            padding: 10px 20px;
+            background: #303030;
+            border: none;
+            color: white;
+            border-radius: 0 2px 2px 0;
+            cursor: pointer;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .auth-btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            border: none;
+        }
+        
+        .sign-in {
+            background: #ff0000;
+            color: white;
+        }
+        
+        .sign-out {
+            background: #303030;
+            color: white;
+            display: none;
+        }
+        
+        .user-info {
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #ff0000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .main-content {
+            display: flex;
+            margin-top: 20px;
+            gap: 20px;
+        }
+        
+        .video-container {
+            flex: 1;
+            background: #0f0f0f;
+            border-radius: 12px;
+        }
+        
+        .video-player {
+            width: 100%;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .video-player video {
+            width: 100%;
+            display: block;
+            border-radius: 12px;
+        }
+        
+        .video-info {
+            padding: 20px 0;
+        }
+        
+        .video-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .video-stats {
+            display: flex;
+            justify-content: space-between;
+            color: #aaa;
+            border-bottom: 1px solid #272727;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .video-actions {
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid #272727;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .action-btn:hover {
+            color: #ff0000;
+        }
+        
+        .action-btn.active {
+            color: #ff0000;
+        }
+        
+        .channel-info {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .channel-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ff0000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .channel-details {
+            flex: 1;
+        }
+        
+        .channel-name {
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .subscribers {
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        .subscribe-btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .video-description {
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+        
+        .comments-section {
+            margin-top: 30px;
+        }
+        
+        .comments-section h3 {
+            margin-bottom: 20px;
+        }
+        
+        .comment-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .comment-input {
+            flex: 1;
+            padding: 12px 15px;
+            background: #121212;
+            border: 1px solid #303030;
+            color: white;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .comment-submit {
+            padding: 12px 20px;
+            background: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .comment-submit:disabled {
+            background: #303030;
+            cursor: not-allowed;
+        }
+        
+        .comment {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .comment-text {
+            color: #ddd;
+            margin-bottom: 5px;
+        }
+        
+        .comment-actions {
+            display: flex;
+            gap: 15px;
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        .comment-action {
+            cursor: pointer;
+        }
+        
+        .comment-action:hover {
+            color: #ff0000;
+        }
+        
+        .sidebar {
+            width: 400px;
+            background: #0f0f0f;
+            border-radius: 12px;
+        }
+        
+        .sidebar h2 {
+            padding: 15px;
+            border-bottom: 1px solid #272727;
+            margin-bottom: 15px;
+        }
+        
+        .video-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .video-item {
+            display: flex;
+            gap: 10px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        .video-item:hover {
+            background: #272727;
+        }
+        
+        .video-thumbnail {
+            width: 160px;
+            height: 90px;
+            border-radius: 4px;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .video-details {
+            flex: 1;
+        }
+        
+        .video-item-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .video-item-channel {
+            color: #aaa;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .video-item-stats {
+            color: #aaa;
+            font-size: 12px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #aaa;
+        }
+        
+        .auth-required {
+            text-align: center;
+            padding: 20px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 1000px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 700px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+            
+            .search-bar {
+                order: 3;
+                flex: 0 0 100%;
+                margin: 15px 0 0 0;
+            }
+            
+            .video-actions {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+        }
+
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-content {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .login-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .login-btn {
+            padding: 12px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .google-btn {
+            background: #fff;
+            color: #333;
+        }
+
+        .github-btn {
+            background: #333;
+            color: #fff;
+        }
+
+        .email-btn {
+            background: #ff0000;
+            color: #fff;
+        }
+
+        .close-login {
+            background: none;
+            border: none;
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <i class="fas fa-play-circle"></i>
+                    <span>Djoukeli.com</span>
+                </a>
+                
+                <div class="search-bar">
+                    <input type="text" placeholder="Rechercher des vidéos...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="user-actions">
+                    <div class="auth-buttons">
+                        <button class="auth-btn sign-in" id="signInButton">Se connecter</button>
+                        <button class="auth-btn sign-out" id="signOutButton">Se déconnecter</button>
+                    </div>
+                    <div class="user-info" id="userInfo">
+                        <div class="user-avatar" id="userAvatar">U</div>
+                        <span id="userName">Utilisateur</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="main-content">
+            <div class="video-container">
+                <div class="video-player">
+                    <video id="mainVideo" controls poster="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBmaWxsPSJub25lIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzIyMiIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjIwIiBmaWxsPSIjNTU1Ii8+PHBhdGggZD0iTTQ1IDM1VjY1TDU1IDUwTDQ1IDM1WiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==">
+                        Votre navigateur ne supporte pas la lecture de vidéos.
+                    </video>
+                </div>
+                
+                <div class="video-info">
+                    <h1 class="video-title" id="videoTitle">Titre de la vidéo sélectionnée</h1>
+                    
+                    <div class="video-stats">
+                        <div id="viewsCounter">250K vues • 15 oct. 2023</div>
+                        <div class="action-buttons">
+                            <button class="action-btn" id="likeButton">
+                                <i class="fas fa-thumbs-up"></i> <span id="likeCount">15K</span>
+                            </button>
+                            <button class="action-btn" id="dislikeButton">
+                                <i class="fas fa-thumbs-down"></i> <span id="dislikeCount">532</span>
+                            </button>
+                            <button class="action-btn"><i class="fas fa-share"></i> Partager</button>
+                        </div>
+                    </div>
+                    
+                    <div class="channel-info">
+                        <div class="channel-avatar">D</div>
+                        <div class="channel-details">
+                            <div class="channel-name">Djoukeli Officiel</div>
+                            <div class="subscribers">1.5M abonnés</div>
+                        </div>
+                        <button class="subscribe-btn">S'abonner</button>
+                    </div>
+                    
+                    <div class="video-description">
+                        Ceci est une description de la vidéo. Elle contient des détails sur le contenu de la vidéo, des liens, et d'autres informations pertinentes.
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <h3 id="commentsTitle">Commentaires</h3>
+                    
+                    <div class="auth-required" id="authRequiredComment">
+                        <p>Veuillez vous connecter pour commenter cette vidéo.</p>
+                    </div>
+                    
+                    <div class="comment-form" id="commentForm" style="display: none;">
+                        <input type="text" class="comment-input" id="commentInput" placeholder="Ajouter un commentaire...">
+                        <button class="comment-submit" id="commentSubmit" disabled>Commenter</button>
+                    </div>
+                    
+                    <div id="commentsList">
+                        <div class="comment">
+                            <div class="comment-avatar">U</div>
+                            <div class="comment-content">
+                                <div class="comment-author">Utilisateur123</div>
+                                <div class="comment-text">Excellent contenu ! J'ai beaucoup appris.</div>
+                                <div class="comment-actions">
+                                    <span><i class="fas fa-thumbs-up"></i> 245</span>
+                                    <span><i class="fas fa-thumbs-down"></i> 3</span>
+                                    <span>Répondre</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="comment">
+                            <div class="comment-avatar">A</div>
+                            <div class="comment-content">
+                                <div class="comment-author">AnotherUser</div>
+                                <div class="comment-text">Merci pour cette vidéo très instructive !</div>
+                                <div class="comment-actions">
+                                    <span><i class="fas fa-thumbs-up"></i> 120</span>
+                                    <span><i class="fas fa-thumbs-down"></i> 1</span>
+                                    <span>Répondre</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <h2>À regarder ensuite</h2>
+                <div class="video-list" id="videoList">
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> Chargement des vidéos...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-modal" id="loginModal">
+        <div class="login-content">
+            <button class="close-login" id="closeLogin">&times;</button>
+            <h2 class="login-title">Se connecter</h2>
+            <div class="login-buttons">
+                <button class="login-btn google-btn" id="googleLogin">
+                    <i class="fab fa-google"></i> Se connecter avec Google
+                </button>
+                <button class="login-btn github-btn" id="githubLogin">
+                    <i class="fab fa-github"></i> Se connecter avec GitHub
+                </button>
+                <button class="login-btn email-btn" id="emailLogin">
+                    <i class="fas fa-envelope"></i> Se connecter avec Email
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script>
+        // Configuration Firebase avec vos informations
+        const firebaseConfig = {
+            apiKey: "AIzaSyCTj9H9KidzwYDr8Onl_UGqxC58ZlGBMfg",
+            authDomain: "test-c81f5.firebaseapp.com",
+            projectId: "test-c81f5",
+            storageBucket: "test-c81f5.firebasestorage.app",
+            messagingSenderId: "94288484954",
+            appId: "1:94288484954:web:cede6d5cf48ede3806d663",
+            measurementId: "G-6WK15KWD4L"
+        };
+
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+        const auth = firebase.auth();
+
+        // Formater les nombres (votre fonction)
+        function formatViews(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toString();
+        }
+
+        // Variables globales
+        let currentVideoId = null;
+        let currentUser = null;
+        let userLiked = false;
+        let userDisliked = false;
+
+        // Éléments DOM
+        const signInButton = document.getElementById('signInButton');
+        const signOutButton = document.getElementById('signOutButton');
+        const userInfo = document.getElementById('userInfo');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+        const likeButton = document.getElementById('likeButton');
+        const dislikeButton = document.getElementById('dislikeButton');
+        const likeCount = document.getElementById('likeCount');
+        const dislikeCount = document.getElementById('dislikeCount');
+        const commentForm = document.getElementById('commentForm');
+        const commentInput = document.getElementById('commentInput');
+        const commentSubmit = document.getElementById('commentSubmit');
+        const commentsList = document.getElementById('commentsList');
+        const authRequiredComment = document.getElementById('authRequiredComment');
+        const loginModal = document.getElementById('loginModal');
+        const closeLogin = document.getElementById('closeLogin');
+        const googleLogin = document.getElementById('googleLogin');
+
+        // Gestion de l'authentification
+        auth.onAuthStateChanged((user) => {
+            currentUser = user;
+            if (user) {
+                // Utilisateur connecté
+                signInButton.style.display = 'none';
+                signOutButton.style.display = 'block';
+                userInfo.style.display = 'flex';
+                commentForm.style.display = 'flex';
+                authRequiredComment.style.display = 'none';
+                
+                // Mettre à jour les informations utilisateur
+                userAvatar.textContent = user.email ? user.email[0].toUpperCase() : 'U';
+                userName.textContent = user.email || 'Utilisateur';
+                
+                // Vérifier les likes/dislikes de l'utilisateur pour la vidéo actuelle
+                if (currentVideoId) {
+                    checkUserReaction();
+                }
+            } else {
+                // Utilisateur non connecté
+                signInButton.style.display = 'block';
+                signOutButton.style.display = 'none';
+                userInfo.style.display = 'none';
+                commentForm.style.display = 'none';
+                authRequiredComment.style.display = 'block';
+            }
+        });
+
+        // Ouvrir la modal de connexion
+        signInButton.addEventListener('click', () => {
+            loginModal.style.display = 'flex';
+        });
+
+        // Fermer la modal de connexion
+        closeLogin.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+        });
+
+        // Connexion avec Google
+        googleLogin.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then(() => {
+                    loginModal.style.display = 'none';
+                })
+                .catch((error) => {
+                    console.error("Erreur de connexion Google:", error);
+                });
+        });
+
+        // Déconnexion
+        signOutButton.addEventListener('click', () => {
+            auth.signOut();
+        });
+
+        // Gestion des likes
+        likeButton.addEventListener('click', () => {
+            if (!currentUser) {
+                loginModal.style.display = 'flex';
+                return;
+            }
+            
+            if (userLiked) {
+                // Retirer le like
+                removeReaction('likes');
+            } else {
+                // Ajouter un like et retirer le dislike si présent
+                addReaction('likes');
+                if (userDisliked) {
+                    removeReaction('dislikes');
+                }
+            }
+        });
+
+        // Gestion des dislikes
+        dislikeButton.addEventListener('click', () => {
+            if (!currentUser) {
+                loginModal.style.display = 'flex';
+                return;
+            }
+            
+            if (userDisliked) {
+                // Retirer le dislike
+                removeReaction('dislikes');
+            } else {
+                // Ajouter un dislike et retirer le like si présent
+                addReaction('dislikes');
+                if (userLiked) {
+                    removeReaction('likes');
+                }
+            }
+        });
+
+        // Fonction pour ajouter une réaction (like/dislike)
+        function addReaction(type) {
+            const videoRef = db.collection('videos').doc(currentVideoId);
+            const userReactionRef = db.collection('reactions').doc(`${currentVideoId}_${currentUser.uid}`);
+            
+            // Ajouter la réaction de l'utilisateur
+            userReactionRef.set({
+                videoId: currentVideoId,
+                userId: currentUser.uid,
+                type: type,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            
+            // Mettre à jour le compteur de la vidéo
+            videoRef.update({
+                [type]: firebase.firestore.FieldValue.increment(1)
+            });
+            
+            // Mettre à jour l'interface
+            if (type === 'likes') {
+                userLiked = true;
+                likeButton.classList.add('active');
+                likeCount.textContent = formatViews(parseInt(likeCount.textContent) + 1);
+            } else {
+                userDisliked = true;
+                dislikeButton.classList.add('active');
+                dislikeCount.textContent = formatViews(parseInt(dislikeCount.textContent) + 1);
+            }
+        }
+
+        // Fonction pour retirer une réaction
+        function removeReaction(type) {
+            const videoRef = db.collection('videos').doc(currentVideoId);
+            const userReactionRef = db.collection('reactions').doc(`${currentVideoId}_${currentUser.uid}`);
+            
+            // Retirer la réaction de l'utilisateur
+            userReactionRef.delete();
+            
+            // Mettre à jour le compteur de la vidéo
+            videoRef.update({
+                [type]: firebase.firestore.FieldValue.increment(-1)
+            });
+            
+            // Mettre à jour l'interface
+            if (type === 'likes') {
+                userLiked = false;
+                likeButton.classList.remove('active');
+                likeCount.textContent = formatViews(parseInt(likeCount.textContent) - 1);
+            } else {
+                userDisliked = false;
+                dislikeButton.classList.remove('active');
+                dislikeCount.textContent = formatViews(parseInt(dislikeCount.textContent) - 1);
+            }
+        }
+
+        // Vérifier la réaction de l'utilisateur pour la vidéo actuelle
+        function checkUserReaction() {
+            if (!currentUser || !currentVideoId) return;
+            
+            const userReactionRef = db.collection('reactions').doc(`${currentVideoId}_${currentUser.uid}`);
+            
+            userReactionRef.get().then((doc) => {
+                if (doc.exists) {
+                    const reaction = doc.data();
+                    if (reaction.type === 'likes') {
+                        userLiked = true;
+                        likeButton.classList.add('active');
+                    } else if (reaction.type === 'dislikes') {
+                        userDisliked = true;
+                        dislikeButton.classList.add('active');
+                    }
+                } else {
+                    userLiked = false;
+                    userDisliked = false;
+                    likeButton.classList.remove('active');
+                    dislikeButton.classList.remove('active');
+                }
+            }).catch((error) => {
+                console.error("Erreur lors de la vérification de la réaction:", error);
+            });
+        }
+
+        // Gestion des commentaires
+        commentInput.addEventListener('input', () => {
+            commentSubmit.disabled = commentInput.value.trim() === '';
+        });
+
+        commentSubmit.addEventListener('click', () => {
+            if (!currentUser || !currentVideoId) return;
+            
+            const commentText = commentInput.value.trim();
+            if (commentText === '') return;
+            
+            // Ajouter le commentaire à Firestore
+            db.collection('comments').add({
+                videoId: currentVideoId,
+                userId: currentUser.uid,
+                userEmail: currentUser.email,
+                text: commentText,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                commentInput.value = '';
+                commentSubmit.disabled = true;
+                loadComments();
+            }).catch((error) => {
+                console.error("Erreur lors de l'ajout du commentaire:", error);
+            });
+        });
+
+        // Charger les commentaires pour la vidéo actuelle
+        function loadComments() {
+            if (!currentVideoId) return;
+            
+            commentsList.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement des commentaires...</div>';
+            
+            db.collection('comments')
+                .where('videoId', '==', currentVideoId)
+                .orderBy('timestamp', 'desc')
+                .get()
+                .then((querySnapshot) => {
+                    commentsList.innerHTML = '';
+                    
+                    if (querySnapshot.empty) {
+                        commentsList.innerHTML = '<div class="loading">Aucun commentaire pour le moment.</div>';
+                        return;
+                    }
+                    
+                    querySnapshot.forEach((doc) => {
+                        const comment = doc.data();
+                        const commentElement = document.createElement('div');
+                        commentElement.className = 'comment';
+                        commentElement.innerHTML = `
+                            <div class="comment-avatar">${comment.userEmail ? comment.userEmail[0].toUpperCase() : 'U'}</div>
+                            <div class="comment-content">
+                                <div class="comment-author">${comment.userEmail || 'Utilisateur'}</div>
+                                <div class="comment-text">${comment.text}</div>
+                                <div class="comment-actions">
+                                    <span class="comment-action"><i class="fas fa-thumbs-up"></i> 0</span>
+                                    <span class="comment-action"><i class="fas fa-thumbs-down"></i> 0</span>
+                                    <span class="comment-action">Répondre</span>
+                                </div>
+                            </div>
+                        `;
+                        commentsList.appendChild(commentElement);
+                    });
+                })
+                .catch((error) => {
+                    console.error("Erreur lors du chargement des commentaires:", error);
+                    commentsList.innerHTML = '<div class="loading">Erreur de chargement des commentaires.</div>';
+                });
+        }
+
+        // Fonction pour charger les vidéos depuis Firebase
+        function loadVideos() {
+            const videoList = document.getElementById('videoList');
+            videoList.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement des vidéos...</div>';
+
+            // Récupérer les vidéos depuis Firestore
+            db.collection("videos").get().then((querySnapshot) => {
+                videoList.innerHTML = '';
+                
+                if (querySnapshot.empty) {
+                    videoList.innerHTML = '<div class="loading">Aucune vidéo disponible.</div>';
+                    return;
+                }
+                
+                querySnapshot.forEach((doc) => {
+                    const videoData = doc.data();
+                    const videoId = doc.id;
+                    
+                    // Créer l'élément de la vidéo
+                    const videoItem = document.createElement('div');
+                    videoItem.className = 'video-item';
+                    videoItem.innerHTML = `
+                        <div class="video-thumbnail">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <div class="video-details">
+                            <div class="video-item-title">${videoData.title || 'Sans titre'}</div>
+                            <div class="video-item-channel">${videoData.channel || 'Chaîne inconnue'}</div>
+                            <div class="video-item-stats">${formatViews(videoData.views || 0)} vues • ${videoData.date || 'Date inconnue'}</div>
+                        </div>
+                    `;
+                    
+                    // Ajouter l'événement de clic pour lire la vidéo
+                    videoItem.addEventListener('click', () => {
+                        playVideo(videoId, videoData);
+                    });
+                    
+                    videoList.appendChild(videoItem);
+                });
+            }).catch((error) => {
+                console.error("Erreur lors du chargement des vidéos: ", error);
+                videoList.innerHTML = '<div class="loading">Erreur de chargement des vidéos.</div>';
+            });
+        }
+
+        // Fonction pour lire une vidéo
+        function playVideo(videoId, videoData) {
+            currentVideoId = videoId;
+            const videoPlayer = document.getElementById('mainVideo');
+            const videoTitle = document.getElementById('videoTitle');
+            const viewsCounter = document.getElementById('viewsCounter');
+            
+            // Mettre à jour les informations de la vidéo
+            videoTitle.textContent = videoData.title || 'Sans titre';
+            viewsCounter.textContent = `${formatViews(videoData.views || 0)} vues • ${videoData.date || 'Date inconnue'}`;
+            
+            // Mettre à jour les compteurs de likes/dislikes
+            likeCount.textContent = formatViews(videoData.likes || 0);
+            dislikeCount.textContent = formatViews(videoData.dislikes || 0);
+            
+            // Réinitialiser les états de like/dislike
+            userLiked = false;
+            userDisliked = false;
+            likeButton.classList.remove('active');
+            dislikeButton.classList.remove('active');
+            
+            // Vérifier les réactions de l'utilisateur s'il est connecté
+            if (currentUser) {
+                checkUserReaction();
+            }
+            
+            // Charger les commentaires pour cette vidéo
+            loadComments();
+            
+            // Récupérer l'URL de la vidéo depuis Firebase Storage
+            storage.ref().child(`videos/${videoId}.mp4`).getDownloadURL()
+                .then((url) => {
+                    videoPlayer.src = url;
+                    videoPlayer.load();
+                    videoPlayer.play().catch(e => {
+                        console.error("Erreur de lecture automatique:", e);
+                    });
+                })
+                .catch((error) => {
+                    console.error("Erreur lors du chargement de la vidéo: ", error);
+                    alert("Erreur lors du chargement de la vidéo. Vérifiez la console pour plus de détails.");
+                });
+        }
+
+        // Charger les vidéos au démarrage
+        document.addEventListener('DOMContentLoaded', loadVideos);
+    </script>
+</body>
+</html>
