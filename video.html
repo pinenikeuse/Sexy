@@ -4,7 +4,7 @@
     <meta name="google-adsense-account" content="ca-pub-5904049904040571">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mougouli.com - Visionnage de vidéo</title>
+    <title>djioukeli.com - Visionnage de vidéo</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -100,7 +100,7 @@
             padding: 10px 15px;
             background-color: var(--dark-color);
             color: white;
-            border: none;
+            border: null;
             border-radius: 0 var(--border-radius) var(--border-radius) 0;
             cursor: pointer;
         }
@@ -165,12 +165,21 @@
             margin: 0 auto;
         }
         
-        .featured-video-container video {
+        /* Format 9:16 pour la vidéo */
+        .video-container-9-16 {
+            position: relative;
             width: 100%;
-            height: auto;
-            max-height: 70vh;
-            object-fit: contain;
+            padding-top: 177.78%; /* 9:16 Aspect Ratio (9/16 * 100) */
             background-color: #000;
+        }
+        
+        .video-container-9-16 video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .featured-video-info {
@@ -467,6 +476,64 @@
             100% { transform: rotate(360deg); }
         }
         
+        /* Ad Overlay */
+        .ad-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            display: none;
+        }
+        
+        .ad-overlay-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .ad-overlay-content h2 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        .ad-overlay-content p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .ad-overlay-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .ad-overlay-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .ad-overlay-btn.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .ad-overlay-btn.secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
         /* Responsive Design */
         @media (max-width: 992px) {
             .main-content {
@@ -494,10 +561,6 @@
             .user-actions {
                 margin-top: 15px;
                 justify-content: center;
-            }
-            
-            .featured-video-container video {
-                max-height: 50vh;
             }
         }
         
@@ -538,9 +601,9 @@
             <div class="header-content">
                 <div class="logo-container">
                     <a href="index.html">
-                        <img id="logo" src="https://raw.githubusercontent.com/pinenikeuse/mougouli/refs/heads/main/1747616058238.jpg" alt="Mougouli Logo">
+                        <img id="logo" src="https://raw.githubusercontent.com/pinenikeuse/mougouli/refs/heads/main/1747616058238.jpg" alt="djioukeli Logo">
                     </a>
-                    <h1 class="site-title">Mougouli</h1>
+                    <h1 class="site-title">djioukeli.com</h1>
                 </div>
                 <div class="search-bar">
                     <input type="text" placeholder="Rechercher des vidéos...">
@@ -561,6 +624,18 @@
         </div>
     </header>
 
+    <!-- Ad Overlay (hidden by default) -->
+    <div id="adOverlay" class="ad-overlay">
+        <div class="ad-overlay-content">
+            <h2>Publicité</h2>
+            <p>Cette vidéo est sponsorisée. Cliquez sur "Voir la publicité" pour continuer la lecture.</p>
+            <div class="ad-overlay-buttons">
+                <button class="ad-overlay-btn primary" onclick="openAdLink()">Voir la publicité</button>
+                <button class="ad-overlay-btn secondary" onclick="closeAdOverlay()">Fermer</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Content -->
     <div class="container">
         <a href="index.html" class="back-btn">
@@ -573,7 +648,9 @@
         <!-- Featured Video Section -->
         <div id="featuredVideoContainer" class="featured-video">
             <div class="featured-video-container">
-                <video id="featuredVideoPlayer" controls autoplay></video>
+                <div class="video-container-9-16">
+                    <video id="featuredVideoPlayer" controls></video>
+                </div>
             </div>
             <div class="featured-video-info">
                 <h2 id="featuredVideoTitle" class="featured-video-title">Chargement de la vidéo...</h2>
@@ -678,7 +755,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>À propos de Mougouli</h4>
+                    <h4>À propos de djioukeli.com</h4>
                     <p>Plateforme de partage de vidéos privées et premium.</p>
                 </div>
                 <div class="footer-section">
@@ -695,7 +772,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2023 Mougouli. Tous droits réservés.</p>
+                <p>&copy; 2023 djioukeli.com. Tous droits réservés.</p>
             </div>
         </div>
     </footer>
@@ -726,6 +803,7 @@
         // Variables globales
         let currentVideoId = null;
         let currentVideoData = null;
+        let adShown = false;
 
         // Fonction de débogage
         function logDebugInfo(message) {
@@ -737,6 +815,33 @@
                 if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                     debugInfo.style.display = 'block';
                 }
+            }
+        }
+
+        // Fonction pour ouvrir le lien publicitaire
+        function openAdLink() {
+            window.open('https://hedwigflooredventure.com/uf868bcft2?key=e8c8806d43592d84d110a00142dc05e8', '_blank');
+            closeAdOverlay();
+            // Redémarrer la vidéo après avoir cliqué sur la pub
+            const videoPlayer = document.getElementById('featuredVideoPlayer');
+            if (videoPlayer) {
+                videoPlayer.play();
+            }
+        }
+
+        // Fonction pour fermer l'overlay publicitaire
+        function closeAdOverlay() {
+            const adOverlay = document.getElementById('adOverlay');
+            if (adOverlay) {
+                adOverlay.style.display = 'none';
+            }
+        }
+
+        // Fonction pour afficher l'overlay publicitaire
+        function showAdOverlay() {
+            const adOverlay = document.getElementById('adOverlay');
+            if (adOverlay) {
+                adOverlay.style.display = 'flex';
             }
         }
 
@@ -767,8 +872,8 @@
                     // Mettre à jour l'interface
                     displayVideo(currentVideoData);
                     
-                    // Charger les vidéos similaires
-                    loadSimilarVideos(currentVideoData.userId);
+                    // Charger les vidéos similaires basées sur le titre
+                    loadSimilarVideosByTitle(currentVideoData.title);
                     
                     // Incrémenter le compteur de vues
                     incrementVideoViews(currentVideoId);
@@ -814,7 +919,6 @@
             
             if (videoPlayer) {
                 videoPlayer.innerHTML = `<source src="${videoData.videoUrl}" type="video/mp4">`;
-                videoPlayer.load();
                 
                 // Gestion des erreurs de lecture vidéo
                 videoPlayer.addEventListener('error', function(e) {
@@ -825,6 +929,25 @@
                 videoPlayer.addEventListener('canplay', function() {
                     logDebugInfo("La vidéo est prête à être lue");
                 });
+                
+                // Événement pour gérer la pause après 2 secondes
+                videoPlayer.addEventListener('play', function() {
+                    logDebugInfo("Lecture de la vidéo démarrée");
+                    
+                    // Si la pub n'a pas encore été affichée, planifier la pause après 2 secondes
+                    if (!adShown) {
+                        setTimeout(function() {
+                            if (!videoPlayer.paused) {
+                                logDebugInfo("Pause de la vidéo après 2 secondes");
+                                videoPlayer.pause();
+                                showAdOverlay();
+                                adShown = true;
+                            }
+                        }, 2000);
+                    }
+                });
+                
+                videoPlayer.load();
             }
             
             if (videoTitle) {
@@ -851,8 +974,8 @@
             updateMetaTags(videoData);
         }
 
-        // CORRECTION: Charger les vidéos similaires - Méthode alternative
-        function loadSimilarVideos(userId) {
+        // Charger les vidéos similaires basées sur le titre
+        function loadSimilarVideosByTitle(title) {
             const similarContainer = document.getElementById('similarVideosContainer');
             
             // Afficher l'indicateur de chargement
@@ -862,36 +985,58 @@
                 </div>
             `;
             
-            logDebugInfo(`Chargement des vidéos similaires pour l'utilisateur: ${userId}`);
+            logDebugInfo(`Chargement des vidéos similaires pour le titre: ${title}`);
             
-            // Méthode alternative: Charger toutes les vidéos et filtrer côté client
+            // Extraire les mots-clés du titre
+            const keywords = title.split(/\s+/).filter(word => word.length > 3);
+            logDebugInfo(`Mots-clés extraits: ${keywords.join(', ')}`);
+            
+            if (keywords.length === 0) {
+                loadRandomVideos();
+                return;
+            }
+            
+            // Charger toutes les vidéos et filtrer côté client par similarité de titre
             db.collection('videos')
-                .where('userId', '==', userId)
                 .get()
             .then((querySnapshot) => {
                 if (querySnapshot.empty) {
-                    logDebugInfo("Aucune vidéo similaire trouvée pour cet utilisateur, chargement de vidéos aléatoires");
+                    logDebugInfo("Aucune vidéo trouvée dans la base de données");
                     loadRandomVideos();
                     return;
                 }
                 
-                // Filtrer côté client pour exclure la vidéo actuelle
-                const filteredVideos = [];
+                const allVideos = [];
                 querySnapshot.forEach((doc) => {
                     if (doc.id !== currentVideoId) {
                         const videoData = doc.data();
                         videoData.id = doc.id;
-                        filteredVideos.push(videoData);
+                        
+                        // Calculer un score de similarité basé sur le titre
+                        let similarityScore = 0;
+                        for (const keyword of keywords) {
+                            if (videoData.title && videoData.title.toLowerCase().includes(keyword.toLowerCase())) {
+                                similarityScore += 1;
+                            }
+                        }
+                        
+                        if (similarityScore > 0) {
+                            videoData.similarityScore = similarityScore;
+                            allVideos.push(videoData);
+                        }
                     }
                 });
                 
-                // Trier par timestamp
-                filteredVideos.sort((a, b) => {
-                    return b.timestamp?.seconds - a.timestamp?.seconds;
+                // Trier par score de similarité (puis par date si égalité)
+                allVideos.sort((a, b) => {
+                    if (b.similarityScore !== a.similarityScore) {
+                        return b.similarityScore - a.similarityScore;
+                    }
+                    return (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0);
                 });
                 
                 // Prendre les 6 premières
-                const similarVideos = filteredVideos.slice(0, 6);
+                const similarVideos = allVideos.slice(0, 6);
                 
                 logDebugInfo(`${similarVideos.length} vidéos similaires trouvées après filtrage`);
                 
@@ -909,7 +1054,7 @@
             });
         }
 
-        // CORRECTION: Charger des vidéos aléatoires
+        // Charger des vidéos aléatoires
         function loadRandomVideos() {
             const similarContainer = document.getElementById('similarVideosContainer');
             
@@ -953,7 +1098,7 @@
             });
         }
 
-        // Afficher les vidéos similaires (version modifiée)
+        // Afficher les vidéos similaires
         function displaySimilarVideos(videosArray) {
             const similarContainer = document.getElementById('similarVideosContainer');
             
@@ -1057,7 +1202,7 @@
         // Fonctions de partage
         function shareVideo(videoId, platform) {
             const shareUrl = window.location.href;
-            const title = "Regardez cette vidéo sur Mougouli!";
+            const title = "Regardez cette vidéo sur djioukeli.com!";
             
             if (platform === 'facebook') {
                 window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
@@ -1091,7 +1236,7 @@
         // Fonction pour mettre à jour les métadonnées OG
         function updateMetaTags(videoData) {
             const metaTags = [
-                { property: 'og:title', content: videoData.title + ' - Mougouli' },
+                { property: 'og:title', content: videoData.title + ' - djioukeli.com' },
                 { property: 'og:description', content: videoData.description.substring(0, 300) },
                 { property: 'og:image', content: videoData.thumbnailUrl || 'https://raw.githubusercontent.com/pinenikeuse/mougouli/main/1747616058238.jpg' },
                 { property: 'og:url', content: window.location.href },
@@ -1101,7 +1246,7 @@
                 { property: 'og:video:width', content: '1280' },
                 { property: 'og:video:height', content: '720' },
                 { name: 'twitter:card', content: 'player' },
-                { name: 'twitter:site', content: '@Mougouli' },
+                { name: 'twitter:site', content: '@djioukeli' },
                 { name: 'twitter:title', content: videoData.title },
                 { name: 'twitter:description', content: videoData.description.substring(0, 200) },
                 { name: 'twitter:image', content: videoData.thumbnailUrl || 'https://raw.githubusercontent.com/pinenikeuse/mougouli/main/1747616058238.jpg' },
@@ -1134,7 +1279,7 @@
             });
             
             // Mettre à jour le titre de la page
-            document.title = videoData.title + ' - Mougouli';
+            document.title = videoData.title + ' - djioukeli.com';
         }
     </script>
 </body>
