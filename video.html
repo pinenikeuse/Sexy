@@ -1079,31 +1079,34 @@
 
     <script>
         // Configuration Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyCTj9H9KidzwYDr8Onl_UGqxC58ZlGBMfg",
-            authDomain: "test-c81f5.firebaseapp.com",
-            projectId: "test-c81f5",
-            storageBucket: "test-c81f5.firebasestorage.app",
-            messagingSenderId: "94288484954",
-            appId: "1:94288484954:web:cede6d5cf48ede3806d663",
-            measurementId: "G-6WK15KWD4L"
-        };
-     
-        // Initialiser Firebase
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+  // Configuration Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyCTj9H9KidzwYDr8Onl_UGqxC58ZlGBMfg",
+    authDomain: "test-c81f5.firebaseapp.com",
+    projectId: "test-c81f5",
+    storageBucket: "test-c81f5.firebasestorage.app",
+    messagingSenderId: "94288484954",
+    appId: "1:94288484954:web:cede6d5cf48ede3806d663",
+    measurementId: "G-6WK15KWD4L"
+};
 
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-    
-        // Variables globales
-        let currentVideoId = null;
-        let currentVideoData = null;
-        let isLiked = false;
-        let isDisliked = false;
-        let isSubscribed = false;
-        let adTimer = null;
+// Initialiser Firebase
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+} else {
+    firebase.app(); // Utiliser l'application déjà initialisée
+}
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// Variables globales
+let currentVideoId = null;
+let currentVideoData = null;
+let isLiked = false;
+let isDisliked = false;
+let isSubscribed = false;
+let adTimer = null;
 
 // ===== FONCTIONS PRINCIPALES =====
 function initVideoPage() {
