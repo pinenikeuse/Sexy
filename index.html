@@ -78,9 +78,7 @@
         .logo-container {
             display: flex;
             align-items: center;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            margin-right: 20px;
         }
         
         #logo {
@@ -206,6 +204,9 @@
             padding: 5px 10px;
             border-radius: 20px;
             margin-left: 10px;
+            position: absolute;
+            top: -30px;
+            right: 0;
         }
         
         .credits-display i {
@@ -303,6 +304,8 @@
         
         .video-info {
             padding: 15px;
+            position: relative;
+            z-index: 4;
         }
         
         .video-title {
@@ -661,8 +664,39 @@
                 padding: 15px;
             }
             
-            .credits-display {
-                display: none;
+            ..credits-display {
+    display: flex;
+    align-items: center;
+    background-color: #e74c3c; /* Rouge vif */
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-left: 10px;
+    position: absolute;
+    top: - 100px; /* Un peu plus haut */
+    right: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border: 1px solid #c0392b; /* Bordure légèrement plus foncée */
+    font-weight: bold;
+    z-index: 1500; /* S'assurer qu'il est au-dessus des autres éléments */
+}
+
+.credits-display i {
+    margin-right: 5px;
+    color: #FFD700; /* Or */
+    font-size: 16px;
+}
+
+.credits-display span {
+    color: white;
+    font-size: 14px;
+}
+
+/* Effet au survol */
+.credits-display:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+}
             }
             
             .publish-btn, .profile-btn, .login-btn {
@@ -722,16 +756,19 @@
     <header>
         <div class="container">
             <div class="header-content">
+                <div class="logo-container">
+                    <img id="logo" src="https://raw.githubusercontent.com/pinenikeuse/mougouli/refs/heads/main/1747616058238.jpg" alt="djoukeli.com Logo">
+                </div>
+                
                 <div class="search-container">
+                    <div id="creditsDisplay" class="credits-display" style="display: none;">
+                        <i class="fas fa-coins"></i> <span id="creditsCount">0</span>    credits
+                    </div>
                     <div class="search-bar">
                         <input type="text" id="searchInput" placeholder="Rechercher des vidéos..." autocomplete="off">
                         <button onclick="performSearch()"><i class="fas fa-search"></i></button>
                     </div>
                     <div id="searchSuggestions" class="search-suggestions"></div>
-                </div>
-                
-                <div class="logo-container">
-                    <img id="logo" src="https://raw.githubusercontent.com/pinenikeuse/mougouli/refs/heads/main/1747616058238.jpg" alt="djoukeli.com Logo">
                 </div>
                 
                 <div class="user-actions">
@@ -746,9 +783,6 @@
                     </button>
                     <div class="message-icon-header" onclick="checkAuthBeforeAction('messages.html')">
                         <i class="fas fa-envelope"></i>
-                    </div>
-                    <div id="creditsDisplay" class="credits-display" style="display: none;">
-                        <i class="fas fa-coins"></i> <span id="creditsCount">0</span> crédits
                     </div>
                     <div id="profileIconHeader" class="profile-icon-header" style="display: none;" onclick="checkAuthBeforeAction('myprofile.html')">
                         U
@@ -1105,49 +1139,49 @@
             });
         }
 
- function createVideoCard(videoData, container) {
-    if (!container) return;
-    
-    const videoCard = document.createElement('div');
-    videoCard.className = 'video-card';
-    videoCard.id = `video-${videoData.id}`;
-    
-    // Formater la date de publication
-    const publishDate = videoData.timestamp ? 
-        new Date(videoData.timestamp.seconds * 1000).toLocaleDateString('fr-FR') : 
-        'Date inconnue';
-    
-    // Utiliser la miniature stockée ou une image par défaut
-    const thumbnailUrl = videoData.thumbnailUrl || 'https://via.placeholder.com/300x200/3498db/ffffff?text=Miniature';
-    
-    // CORRECTION: Ajout de l'accolade manquante dans l'interpolation ${videoData.username}
-    videoCard.innerHTML = `
-        <div class="video-thumbnail-container" onclick="navigateToVideo('${videoData.id}')">
-            <img class="thumbnail-background" src="${thumbnailUrl}" alt="${videoData.title}">
-            <img class="thumbnail-foreground" src="${thumbnailUrl}" alt="${videoData.title}">
-            <div class="play-icon">
-                <i class="fas fa-play-circle"></i>
-            </div>
-        </div>
-        <div class="video-info">
-            <h3 class="video-title">${videoData.title}</h3>
+        function createVideoCard(videoData, container) {
+            if (!container) return;
             
-            <div class="video-stats">
-                <div class="video-views">
-                    <i class="fas fa-eye"></i> ${videoData.views || 0} vues
+            const videoCard = document.createElement('div');
+            videoCard.className = 'video-card';
+            videoCard.id = `video-${videoData.id}`;
+            
+            // Formater la date de publication
+            const publishDate = videoData.timestamp ? 
+                new Date(videoData.timestamp.seconds * 1000).toLocaleDateString('fr-FR') : 
+                'Date inconnue';
+            
+            // Utiliser la miniature stockée ou une image par défaut
+            const thumbnailUrl = videoData.thumbnailUrl || 'https://via.placeholder.com/300x200/3498db/ffffff?text=Miniature';
+            
+            videoCard.innerHTML = `
+                <div class="video-thumbnail-container" onclick="navigateToVideo('${videoData.id}')">
+                    <img class="thumbnail-background" src="${thumbnailUrl}" alt="${videoData.title}">
+                    <img class="thumbnail-foreground" src="${thumbnailUrl}" alt="${videoData.title}">
+                    <div class="play-icon">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
                 </div>
-                <div class="video-date">
-                    <i class="far fa-calendar-alt"></i> ${publishDate}
+                <div class="video-info">
+                    <h3 class="video-title">${videoData.title}</h3>
+                    
+                    <div class="video-stats">
+                        <div class="video-views">
+                            <i class="fas fa-eye"></i> ${videoData.views || 0} vues
+                        </div>
+                        <div class="video-date">
+                            <i class="far fa-calendar-alt"></i> ${publishDate}
+                        </div>
+                        <div class="video-author" onclick="viewUserProfile('${videoData.userId}', '${videoData.username}')">
+                            <i class="fas fa-user"></i> ${videoData.username}
+                        </div>
+                    </div>
                 </div>
-                <div class="video-author" onclick="viewUserProfile('${videoData.userId}', '${videoData.username}')">
-                    <i class="fas fa-user"></i> ${videoData.username}
-                </div>
-            </div>
-        </div>
-    `;
-    
-    container.appendChild(videoCard);
-}
+            `;
+            
+            container.appendChild(videoCard);
+        }
+
         function navigateToVideo(videoId) {
             // Ajouter 5 crédits à l'utilisateur connecté après 30 minutes
             const user = auth.currentUser;
@@ -1297,63 +1331,62 @@
         }
 
         // ===== FONCTIONS UTILITAIRES =====
-     
-    // ===== FONCTIONS DE VÉRIFICATION D'ÂGE =====
-    function confirmAge() {
-        try {
-            // Utiliser localStorage au lieu de sessionStorage pour une persistance à long terme
-            localStorage.setItem('ageVerified', 'true');
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) modal.style.display = 'none';
+        }
+
+        // ===== FONCTIONS DE VÉRIFICATION D'ÂGE =====
+        function confirmAge() {
+            try {
+                // Utiliser localStorage au lieu de sessionStorage pour une persistance à long terme
+                localStorage.setItem('ageVerified', 'true');
+                
+                // Masquer la modal de vérification d'âge
+                const ageVerification = document.getElementById('ageVerification');
+                if (ageVerification) {
+                    ageVerification.style.display = 'none';
+                }
+            } catch (e) {
+                console.error("Erreur lors de la confirmation d'âge:", e);
+            }
+        }
+
+        function denyAge() {
+            window.location.href = 'https://www.google.com';
+        }
+
+        function checkAgeVerification() {
+            let isAgeVerified = false;
             
-            // Masquer la modal de vérification d'âge
+            // Vérifier d'abord dans localStorage
+            try {
+                isAgeVerified = localStorage.getItem('ageVerified') === 'true';
+            } catch (e) {
+                console.error("Erreur d'accès au localStorage:", e);
+            }
+            
+            // Si pas trouvé dans localStorage, vérifier dans sessionStorage (pour compatibilité)
+            if (!isAgeVerified) {
+                try {
+                    isAgeVerified = sessionStorage.getItem('ageVerified') === 'true';
+                } catch (e) {
+                    console.error("Erreur d'accès au sessionStorage:", e);
+                }
+            }
+            
+            // Si toujours pas trouvé, vérifier les cookies
+            if (!isAgeVerified) {
+                isAgeVerified = document.cookie.includes('ageVerified=true');
+            }
+            
+            // Afficher ou masquer la modal en fonction du résultat
             const ageVerification = document.getElementById('ageVerification');
             if (ageVerification) {
-                ageVerification.style.display = 'none';
-            }
-        } catch (e) {
-            console.error("Erreur lors de la confirmation d'âge:", e);
-        }
-    }
-
-    function denyAge() {
-        window.location.href = 'https://www.google.com';
-    }
-
-    function checkAgeVerification() {
-        let isAgeVerified = false;
-        
-        // Vérifier d'abord dans localStorage
-        try {
-            isAgeVerified = localStorage.getItem('ageVerified') === 'true';
-        } catch (e) {
-            console.error("Erreur d'accès au localStorage:", e);
-        }
-        
-        // Si pas trouvé dans localStorage, vérifier dans sessionStorage (pour compatibilité)
-        if (!isAgeVerified) {
-            try {
-                isAgeVerified = sessionStorage.getItem('ageVerified') === 'true';
-            } catch (e) {
-                console.error("Erreur d'accès au sessionStorage:", e);
+                ageVerification.style.display = isAgeVerified ? 'none' : 'flex';
             }
         }
-        
-        // Si toujours pas trouvé, vérifier les cookies
-        if (!isAgeVerified) {
-            isAgeVerified = document.cookie.includes('ageVerified=true');
-        }
-        
-        // Afficher ou masquer la modal en fonction du résultat
-        const ageVerification = document.getElementById('ageVerification');
-        if (ageVerification) {
-            ageVerification.style.display = isAgeVerified ? 'none' : 'flex';
-        }
-    }
 
-    // ===== ÉVÉNEMENTS AU CHARGEMENT =====
-    window.addEventListener('load', function() {
-        checkAgeVerification();
-        // ... le reste de votre code de chargement
-    });
         // Fonction de navigation fluide
         function navigateTo(page) {
             // Animation de transition
