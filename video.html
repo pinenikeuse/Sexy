@@ -851,7 +851,7 @@
             updateMetaTags(videoData);
         }
 
-        // Charger les vidéos similaires
+        // CORRECTION: Charger les vidéos similaires - Méthode alternative
         function loadSimilarVideos(userId) {
             const similarContainer = document.getElementById('similarVideosContainer');
             
@@ -864,23 +864,44 @@
             
             logDebugInfo(`Chargement des vidéos similaires pour l'utilisateur: ${userId}`);
             
-            // Charger les vidéos du même utilisateur
+            // Méthode alternative: Charger toutes les vidéos et filtrer côté client
             db.collection('videos')
                 .where('userId', '==', userId)
-                .where(firebase.firestore.FieldPath.documentId(), '!=', currentVideoId)
-                .orderBy('timestamp', 'desc')
-                .limit(6)
                 .get()
             .then((querySnapshot) => {
                 if (querySnapshot.empty) {
                     logDebugInfo("Aucune vidéo similaire trouvée pour cet utilisateur, chargement de vidéos aléatoires");
-                    // Si l'utilisateur n'a pas d'autres vidéos, charger des vidéos aléatoires
                     loadRandomVideos();
                     return;
                 }
                 
-                logDebugInfo(`${querySnapshot.size} vidéos similaires trouvées`);
-                displaySimilarVideos(querySnapshot);
+                // Filtrer côté client pour exclure la vidéo actuelle
+                const filteredVideos = [];
+                querySnapshot.forEach((doc) => {
+                    if (doc.id !== currentVideoId) {
+                        const videoData = doc.data();
+                        videoData.id = doc.id;
+                        filteredVideos.push(videoData);
+                    }
+                });
+                
+                // Trier par timestamp
+                filteredVideos.sort((a, b) => {
+                    return b.timestamp?.seconds - a.timestamp?.seconds;
+                });
+                
+                // Prendre les 6 premières
+                const similarVideos = filteredVideos.slice(0, 6);
+                
+                logDebugInfo(`${similarVideos.length} vidéos similaires trouvées après filtrage`);
+                
+                if (similarVideos.length === 0) {
+                    loadRandomVideos();
+                    return;
+                }
+                
+                // Afficher les vidéos similaires
+                displaySimilarVideos(similarVideos);
             })
             .catch((error) => {
                 logDebugInfo(`Erreur lors du chargement des vidéos similaires: ${error.message}`);
@@ -888,26 +909,43 @@
             });
         }
 
-        // Charger des vidéos aléatoires si pas de vidéos similaires
+        // CORRECTION: Charger des vidéos aléatoires
         function loadRandomVideos() {
             const similarContainer = document.getElementById('similarVideosContainer');
             
             logDebugInfo("Chargement de vidéos aléatoires");
             
-            // Construction de la requête conditionnelle
-            let query = db.collection('videos')
-                .orderBy('timestamp', 'desc')
-                .limit(6);
-            
-            // Exclure la vidéo actuelle si elle existe
-            if (currentVideoId) {
-                query = query.where(firebase.firestore.FieldPath.documentId(), '!=', currentVideoId);
-            }
-            
-            query.get()
+            // Charger toutes les vidéos et filtrer côté client
+            db.collection('videos')
+                .get()
             .then((querySnapshot) => {
-                logDebugInfo(`${querySnapshot.size} vidéos aléatoires trouvées`);
-                displaySimilarVideos(querySnapshot);
+                if (querySnapshot.empty) {
+                    similarContainer.innerHTML = '<p>Aucune vidéo trouvée.</p>';
+                    return;
+                }
+                
+                const allVideos = [];
+                querySnapshot.forEach((doc) => {
+                    if (doc.id !== currentVideoId) {
+                        const videoData = doc.data();
+                        videoData.id = doc.id;
+                        allVideos.push(videoData);
+                    }
+                });
+                
+                // Mélanger aléatoirement et prendre 6 vidéos
+                const shuffled = allVideos.sort(() => 0.5 - Math.random());
+                const randomVideos = shuffled.slice(0, 6);
+                
+                logDebugInfo(`${randomVideos.length} vidéos aléatoires trouvées`);
+                
+                if (randomVideos.length === 0) {
+                    similarContainer.innerHTML = '<p>Aucune vidéo similaire trouvée.</p>';
+                    return;
+                }
+                
+                // Afficher les vidéos
+                displaySimilarVideos(randomVideos);
             })
             .catch((error) => {
                 logDebugInfo(`Erreur lors du chargement des vidéos aléatoires: ${error.message}`);
@@ -915,21 +953,18 @@
             });
         }
 
-        // Afficher les vidéos similaires
-        function displaySimilarVideos(querySnapshot) {
+        // Afficher les vidéos similaires (version modifiée)
+        function displaySimilarVideos(videosArray) {
             const similarContainer = document.getElementById('similarVideosContainer');
             
-            if (querySnapshot.empty) {
+            if (!videosArray || videosArray.length === 0) {
                 similarContainer.innerHTML = '<p>Aucune vidéo similaire trouvée.</p>';
                 return;
             }
             
             similarContainer.innerHTML = '';
             
-            querySnapshot.forEach((doc) => {
-                const videoData = doc.data();
-                videoData.id = doc.id;
-                
+            videosArray.forEach((videoData) => {
                 const videoCard = document.createElement('div');
                 videoCard.className = 'video-card';
                 
