@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture vidéo - Mougouli</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #28a745;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #000;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 0;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        #logo {
+            width: 120px;
+            height: auto;
+            margin-right: 15px;
+        }
+        
+        .site-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+        }
+        
+        .back-btn {
+            padding: 8px 15px;
+            background-color: var(--dark-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Video Player Section */
+        .video-player-section {
+            padding: 20px 0;
+            background-color: #000;
+            color: white;
+        }
+        
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        #mainVideoPlayer {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background-color: #000;
+        }
+        
+        .video-info {
+            padding: 20px 0;
+        }
+        
+        .video-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        .video-author {
+            color: var(--primary-color);
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .video-description {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .share-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .share-btn {
+            padding: 10px 15px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .share-btn:hover {
+            background-color: #555;
+        }
+        
+        /* Related Videos */
+        .related-videos {
+            padding: 30px 0;
+            background-color: #111;
+        }
+        
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            margin: 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            color: white;
+        }
+        
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .video-card {
+            background-color: #222;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+        }
+        
+        .video-thumbnail video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .video-info-small {
+            padding: 10px;
+        }
+        
+        .video-title-small {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: white;
+        }
+        
+        .video-meta-small {
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h4 {
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: white;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: #ddd;
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #555;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .videos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .video-title {
+                font-size: 20px;
+            }
+            
+            .share-container {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img id="logo" src="https://raw.githubusercontent.com/pinenikeuse/mougouli/refs/heads/main/1747616058238.jpg" alt="Mougouli Logo">
+                    <h1 class="site-title">Mougouli</h1>
+                </div>
+                <button class="back-btn" onclick="goBack()">
+                    <i class="fas fa-arrow-left"></i> Retour
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Video Player Section -->
+    <section class="video-player-section">
+        <div class="container">
+            <div class="video-container">
+                <video id="mainVideoPlayer" controls autoplay></video>
+            </div>
+            
+            <div class="video-info">
+                <h1 id="videoTitle" class="video-title">Titre de la vidéo</h1>
+                
+                <div class="video-meta">
+                    <div>
+                        <span id="videoViews">0 vues</span> • 
+                        <span id="videoDate">Date de publication</span>
+                    </div>
+                    <span class="video-author" id="videoAuthor">Auteur</span>
+                </div>
+                
+                <p id="videoDescription" class="video-description">Description de la vidéo...</p>
+                
+                <div class="share-container">
+                    <button class="share-btn" onclick="shareVideo('facebook')">
+                        <i class="fab fa-facebook"></i> Partager
+                    </button>
+                    <button class="share-btn" onclick="shareVideo('twitter')">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </button>
+                    <button class="share-btn" onclick="shareVideo('whatsapp')">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </button>
+                    <button class="share-btn" onclick="copyVideoLink()">
+                        <i class="fas fa-link"></i> Copier le lien
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Videos Section -->
+    <section class="related-videos">
+        <div class="container">
+            <h2 class="section-title">Vidéos similaires</h2>
+            <div class="videos-grid" id="relatedVideosContainer">
+                <!-- Les vidéos similaires seront chargées ici -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>À propos de Mougouli</h4>
+                    <p>Plateforme de partage de vidéos privées et premium.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Liens rapides</h4>
+                    <a href="index.html">Accueil</a>
+                    <a href="#">Vidéos tendance</a>
+                    <a href="#">Catégories</a>
+                    <a href="#">À propos</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <a href="mailto:baizemi0039@gmail.com">baizemi0039@gmail.com</a>
+                    <p>Pour toute question ou partenariat</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Mougouli. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Récupérer l'ID de la vidéo depuis l'URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const videoId = urlParams.get('id');
+        
+        // Éléments DOM
+        const videoPlayer = document.getElementById('mainVideoPlayer');
+        const videoTitle = document.getElementById('videoTitle');
+        const videoViews = document.getElementById('videoViews');
+        const videoDate = document.getElementById('videoDate');
+        const videoAuthor = document.getElementById('videoAuthor');
+        const videoDescription = document.getElementById('videoDescription');
+        const relatedVideosContainer = document.getElementById('relatedVideosContainer');
+        
+        // Simuler des données de vidéo (à remplacer par une vraie source de données)
+        const videoData = {
+            id: videoId,
+            title: "Titre de la vidéo " + videoId,
+            views: Math.floor(Math.random() * 10000),
+            date: new Date().toLocaleDateString('fr-FR'),
+            author: "Utilisateur " + Math.floor(Math.random() * 100),
+            description: "Cette vidéo est un exemple de contenu sur Mougouli. Elle montre comment intégrer une page de lecture vidéo dédiée avec une navigation fluide.",
+            videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        };
+        
+        // Simuler des vidéos similaires
+        const relatedVideos = [
+            {id: "2", title: "Vidéo similaire 1", author: "Utilisateur 45", views: 3452, thumbnail: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"},
+            {id: "3", title: "Vidéo similaire 2", author: "Utilisateur 23", views: 7891, thumbnail: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"},
+            {id: "4", title: "Vidéo similaire 3", author: "Utilisateur 67", views: 2345, thumbnail: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"},
+            {id: "5", title: "Vidéo similaire 4", author: "Utilisateur 89", views: 5678, thumbnail: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"}
+        ];
+        
+        // Charger les données de la vidéo
+        function loadVideoData() {
+            if (videoId) {
+                // Ici, vous devriez récupérer les données depuis votre base de données
+                // Pour l'exemple, nous utilisons des données simulées
+                
+                videoTitle.textContent = videoData.title;
+                videoViews.textContent = `${videoData.views} vues`;
+                videoDate.textContent = videoData.date;
+                videoAuthor.textContent = videoData.author;
+                videoDescription.textContent = videoData.description;
+                
+                // Configurer la source vidéo
+                videoPlayer.innerHTML = `<source src="${videoData.videoUrl}" type="video/mp4">`;
+                videoPlayer.load();
+                
+                // Charger les vidéos similaires
+                loadRelatedVideos();
+            } else {
+                // Rediriger vers la page d'accueil si aucun ID de vidéo n'est fourni
+                window.location.href = "index.html";
+            }
+        }
+        
+        // Charger les vidéos similaires
+        function loadRelatedVideos() {
+            relatedVideosContainer.innerHTML = '';
+            
+            relatedVideos.forEach(video => {
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                videoCard.onclick = () => {
+                    // Animation de transition fluide
+                    videoCard.style.transition = 'all 0.3s ease';
+                    videoCard.style.transform = 'scale(0.95)';
+                    
+                    setTimeout(() => {
+                        window.location.href = `video.html?id=${video.id}`;
+                    }, 300);
+                };
+                
+                videoCard.innerHTML = `
+                    <div class="video-thumbnail">
+                        <video>
+                            <source src="${video.thumbnail}" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video-info-small">
+                        <h3 class="video-title-small">${video.title}</h3>
+                        <p class="video-meta-small">${video.author} • ${video.views} vues</p>
+                    </div>
+                `;
+                
+                relatedVideosContainer.appendChild(videoCard);
+            });
+        }
+        
+        // Partager la vidéo
+        function shareVideo(platform) {
+            const shareUrl = window.location.href;
+            const title = "Regardez cette vidéo sur Mougouli: " + videoData.title;
+            
+            let shareWindowUrl;
+            
+            switch(platform) {
+                case 'facebook':
+                    shareWindowUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+                    break;
+                case 'twitter':
+                    shareWindowUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(shareUrl)}`;
+                    break;
+                case 'whatsapp':
+                    shareWindowUrl = `https://wa.me/?text=${encodeURIComponent(title + ' ' + shareUrl)}`;
+                    break;
+                default:
+                    return;
+            }
+            
+            window.open(shareWindowUrl, '_blank');
+        }
+        
+        // Copier le lien de la vidéo
+        function copyVideoLink() {
+            const videoUrl = window.location.href;
+            
+            navigator.clipboard.writeText(videoUrl).then(() => {
+                alert("Lien copié dans le presse-papier!");
+            }).catch(err => {
+                console.error('Erreur lors de la copie du lien: ', err);
+            });
+        }
+        
+        // Retour à la page précédente
+        function goBack() {
+            // Animation de transition
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.3s ease';
+            
+            setTimeout(() => {
+                window.history.back();
+            }, 300);
+        }
+        
+        // Initialiser la page
+        window.onload = function() {
+            // Animation d'entrée
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.3s ease';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+            
+            loadVideoData();
+        };
+    </script>
+</body>
+</html>
